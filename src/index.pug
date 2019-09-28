@@ -1,0 +1,23 @@
+doctype html
+html(lang="en")
+	head
+		meta(charset="UTF-8")
+		meta(
+			name="viewport"
+			content="width=device-width,initial-scale=1.0"
+		)
+		each js, index in htmlWebpackPlugin.files.js
+			script(
+				async
+				defer
+				src=js
+				cross-origin="anonymous"
+				integrity=htmlWebpackPlugin.files.jsIntegrity[index]
+			)
+		each cssFile in htmlWebpackPlugin.files.css
+			- const length = htmlWebpackPlugin.files.publicPath.length
+			- const path = cssFile.substr(length)
+			style !{compilation.assets[path].source()}
+	body
+		input#input(type="text" placeholder="Type here...")
+		img#img

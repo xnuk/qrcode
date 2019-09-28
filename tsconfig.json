@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"rootDir": "src",
+		"outDir": "dist",
+		"module": "commonjs",
+		"target": "es5",
+		"lib": ["dom", "es2015"],
+		"sourceMap": false,
+		"allowJs": false,
+		"moduleResolution": "node",
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"forceConsistentCasingInFileNames": true,
+		"newLine": "lf",
+		"removeComments": true,
+		"esModuleInterop": true
+	},
+	"exclude": ["./webpack.config.ts", "./dist/", "./node_modules/"]
+}
