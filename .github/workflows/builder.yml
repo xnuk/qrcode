@@ -1,0 +1,44 @@
+name: Bulldozer
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version:
+          - 12.x
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: npm install, build, and test
+      run: npm ci && npm run build
+      env:
+        CI: true
+
+    - name: pushu
+      run: |
+        git checkout --orphan gh-pages &&
+        git reset &&
+        git add dist &&
+        git clean -df &&
+        git checkout -- . &&
+        mv dist/* . &&
+        rm -d dist &&
+
+        git config user.email action@github.com &&
+        git config user.name 'Github Actions' &&
+        git add --all && git commit -m '[ci skip]' &&
+        git push https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git HEAD:gh-pages --force
