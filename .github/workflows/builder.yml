@@ -43,8 +43,4 @@ jobs:
         git config user.email ${GITHUB_ACTOR}@users.noreply.github.com &&
         git config user.name ${GITHUB_ACTOR} &&
         git add --all && git commit -m '[ci skip]' &&
-        
-        echo ${GITHUB_ACTOR}
-        git show HEAD
-
-        git push --set-upstream origin HEAD --force-with-lease
+        git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git gh-pages --force-with-lease
