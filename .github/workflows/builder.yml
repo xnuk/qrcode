@@ -40,9 +40,11 @@ jobs:
         mv dist/* . &&
         rm -d dist &&
         
-        git remote -v
+        git remote rm origin
+        git remote add origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+        git fetch
 
         git config user.email ${GITHUB_ACTOR}@users.noreply.github.com &&
         git config user.name ${GITHUB_ACTOR} &&
         git add --all && git commit -m '[ci skip]' &&
-        git push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git gh-pages --force-with-lease
+        git push origin gh-pages --force-with-lease
