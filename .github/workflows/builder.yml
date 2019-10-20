@@ -1,4 +1,4 @@
-name: Node CI
+name: Bulldozer
 
 on:
   push:
@@ -43,4 +43,8 @@ jobs:
         git config user.email ${GITHUB_ACTOR}@users.noreply.github.com &&
         git config user.name ${GITHUB_ACTOR} &&
         git add --all && git commit -m '[ci skip]' &&
+        
+        echo ${GITHUB_ACTOR}
+        git show HEAD
+
         git push --set-upstream origin HEAD --force-with-lease
