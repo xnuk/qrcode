@@ -43,4 +43,4 @@ jobs:
         git config user.email action@github.com &&
         git config user.name 'Github Actions' &&
         git add --all && git commit -m '[ci skip]' &&
-        git push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:gh-pages --force-with-lease
+        git push https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git HEAD:gh-pages --force-with-lease
