@@ -1,0 +1,16 @@
+name: Automatic pull request review
+on:
+  pull_request:
+    types: opened
+jobs:
+  automate-pullrequest-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Approve pull request
+        if: github.actor == 'dependabot-preview'
+        run: >
+          curl -X POST
+          -H 'Content-Type: application/json'
+          -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}'
+          "https://api.github.com/repos/${{ github.repository }}/pulls/$(echo $GITHUB_REF | tr -dc '0-9')/reviews"
+          -d '{"body": "@dependabot merge", "event": "APPROVE"}'
