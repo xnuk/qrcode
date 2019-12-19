@@ -226,7 +226,7 @@ const ndatalenbits = (ver: number, mode: MODE): number => {
 		return ver < 10 ? 9 : ver < 27 ? 11 : 13
 	case MODE_OCTET:
 		return ver < 10 ? 8 : 16
-	// case MODE.KANJI: return ver < 10 ? 8 : ver < 27 ? 10 : 12
+		// case MODE.KANJI: return ver < 10 ? 8 : ver < 27 ? 10 : 12
 	}
 }
 
@@ -243,7 +243,7 @@ const getmaxdatalen = (ver: number, mode: MODE, ecclevel: ECCLEVEL): number => {
 		return ((nbits / 11) | 0) * 2 + (nbits % 11 < 6 ? 0 : 1)
 	case MODE_OCTET:
 		return (nbits / 8) | 0
-	// case MODE.KANJI: return (nbits / 13) | 0
+		// case MODE.KANJI: return (nbits / 13) | 0
 	}
 }
 
@@ -347,7 +347,7 @@ const encode = (
 		for (let i = 1; i < datalen; i += 2) {
 			pack(
 				ALPHANUMERIC_MAP_INDEX(data.charAt(i - 1)) * 45 +
-						ALPHANUMERIC_MAP_INDEX(data.charAt(i)),
+					ALPHANUMERIC_MAP_INDEX(data.charAt(i)),
 				11,
 			)
 		}
@@ -536,7 +536,7 @@ const makebasematrix = (
 		for (let i = 0; i < 6; ++i) {
 			for (let j = 0; j < 3; ++j) {
 				matrix[i][n - 11 + j] = matrix[n - 11 + j][i] =
-						((code >> k++) & 1) as Bit
+					((code >> k++) & 1) as Bit
 				reserved[i][n - 11 + j] = reserved[n - 11 + j][i] = 1
 			}
 		}
@@ -551,7 +551,7 @@ const makebasematrix = (
 const putdata = (
 	matrix: Bit[][],
 	reserved: Bit[][],
-	buf: number[]
+	buf: number[],
 ): typeof matrix => {
 	const n = matrix.length
 	let k = 0
@@ -580,7 +580,7 @@ const putdata = (
 const maskdata = (
 	matrix: Bit[][],
 	reserved: Bit[][],
-	mask: number
+	mask: number,
 ): typeof matrix => {
 	const maskf = MASKFUNCS[mask]
 	const n = matrix.length
@@ -596,7 +596,7 @@ const maskdata = (
 const putformatinfo = (
 	matrix: Bit[][],
 	ecclevel: ECCLEVEL,
-	mask: number
+	mask: number,
 ): typeof matrix => {
 	const n = matrix.length
 	const code = augumentbch((ecclevel << 3) | mask, 5, 0x537, 10) ^ 0x5412
@@ -660,10 +660,10 @@ const evaluatematrix = (matrix: Bit[][]): number => {
 			const p = groups[i]
 			if (
 				groups[i - 1] === p &&
-					groups[i - 2] === 3 * p &&
-					groups[i - 3] === p &&
-					groups[i - 4] === p &&
-					(groups[i - 5] >= 4 * p || groups[i + 1] >= 4 * p)
+				groups[i - 2] === 3 * p &&
+				groups[i - 3] === p &&
+				groups[i - 4] === p &&
+				(groups[i - 5] >= 4 * p || groups[i + 1] >= 4 * p)
 			) {
 				// this part differs from zxing...
 				score += PENALTY_FINDERLIKE
@@ -724,7 +724,7 @@ const generate = (
 	ver: Version,
 	mode: MODE,
 	ecclevel: ECCLEVEL,
-	mask: number | null | undefined
+	mask: number | null | undefined,
 ): Bit[][] => {
 	const v = VERSIONS[ver]
 	let buf = encode(ver, mode, data, ndatabits(ver, ecclevel) >> 3)
@@ -774,7 +774,7 @@ const guessMode = (data: string | number[]): MODE => {
 }
 
 const guessVersion = (
-	data: string | number[], mode: MODE, ecclevel: ECCLEVEL
+	data: string | number[], mode: MODE, ecclevel: ECCLEVEL,
 ): Version | null => {
 	let version: Version = 1
 	const len = data.length
@@ -796,11 +796,11 @@ const guessVersion = (
 // - mask: an integer in [0,7]. when omitted (or -1) the best mask is chosen.
 //
 export const generateFromText = (data: string | number[], options: Partial<{
-		version: Version
-		mode: MODE
-		ecclevel: ECCLEVEL
-		mask: Mask
-	}> = {}): Bit[][] => {
+	version: Version
+	mode: MODE
+	ecclevel: ECCLEVEL
+	mask: Mask
+}> = {}): Bit[][] => {
 	const ecclevel = options.ecclevel != null ? options.ecclevel : ECCLEVEL_L
 	const mode = options.mode != null ? options.mode : guessMode(data)
 	const mask = options.mask
