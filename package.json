@@ -39,7 +39,7 @@
     "pug-loader": "^2.4.0",
     "sass": "^1.23.0",
     "sass-loader": "^8.0.0",
-    "terser-webpack-plugin": "^2.1.2",
+    "terser-webpack-plugin": "^2.3.1",
     "ts-loader": "^6.2.0",
     "ts-node": "^8.5.4",
     "typescript": "^3.6.3",
