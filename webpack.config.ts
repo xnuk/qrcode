@@ -3,9 +3,9 @@ import { ProgressPlugin } from 'webpack'
 
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import HtmlWebpackInlineSourcePlugin from 'html-webpack-inline-source-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin'
-import SriPlugin from 'webpack-subresource-integrity'
 
 const path = resolve.bind(null, __dirname)
 
@@ -19,20 +19,18 @@ export default {
 	entry: path('src', 'index.ts'),
 
 	output: {
-		filename: '[name].[chunkhash].js',
 		path: path('dist'),
 	},
 
 	plugins: [
 		new ProgressPlugin,
-		new MiniCssExtractPlugin({ filename: 'index.css', ignoreOrder: false }),
+		new MiniCssExtractPlugin({ ignoreOrder: false }),
 		new HtmlWebpackPlugin({
-			template: path('src', 'index.pug'),
-			inject: false,
+			template: path('src', 'index.html'),
+			inlineSource: '.(js|css)$',
+			filename: 'index.html'
 		}),
-		new SriPlugin({
-			hashFuncNames: ['sha384']
-		}),
+		new HtmlWebpackInlineSourcePlugin(),
 	],
 
 	module: {
@@ -46,11 +44,6 @@ export default {
 				...typescript,
 				enforce: 'pre',
 				use: 'eslint-loader',
-			},
-
-			{
-				test: /\.pug$/,
-				use: 'pug-loader',
 			},
 
 			{
@@ -100,6 +93,6 @@ export default {
 	},
 
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js', '.pug', 'sass'],
+		extensions: ['.tsx', '.ts', '.js', 'sass'],
 	},
 }

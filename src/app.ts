@@ -1,16 +1,6 @@
 import { qrcode } from './qrcode'
 
-const isLoaded = (): boolean => {
-	const readyState = document.readyState
-	return readyState === 'complete' || readyState === 'interactive'
-}
-
-const whenLoaded = (cb: () => void): void => {
-	if (isLoaded()) return cb()
-	window.onload = cb
-}
-
-const debounce = (cb: () => void, timeout = 0): (() => void) => {
+const debounce = (cb: () => void, timeout: number): (() => void) => {
 	let t = 0
 	let lock = false
 	return (): void => {
@@ -18,38 +8,59 @@ const debounce = (cb: () => void, timeout = 0): (() => void) => {
 			clearTimeout(t)
 		}
 		lock = true
-		t = window.setTimeout(() => {
+		t = (setTimeout(() => {
 			lock = false
 			cb()
-		}, timeout)
+		}, timeout) as unknown) as number
 	}
 }
 
-whenLoaded(() => {
-	const img = document.getElementById('img') as HTMLImageElement
-	const input = document.getElementById('input') as HTMLInputElement
+const event = (
+	target: Window | HTMLElement | Document,
+	types: string[],
+	func: () => void,
+): typeof func => {
+	types.forEach(key => target.addEventListener(key, func, false))
+	return func
+}
 
-	const update = debounce((): void => {
-		img.src = qrcode(input.value || '')
-	}, 150)
+const once = (func?: () => void) => (): void =>
+	func && (func(), (func = undefined))
 
-	const hashUpdate = (): void => {
-		input.value = window.location.hash.substring(1)
-		update()
-		window.requestAnimationFrame(() => {
-			input.focus()
-			window.requestAnimationFrame(() => {
-				input.select()
-			})
-		})
-	}
+const next = (func: () => void, ...funcs: (() => void)[]): void => {
+	window.requestAnimationFrame(() => {
+		func()
+		const first = funcs.shift()
+		first && next(first, ...funcs)
+	})
+}
 
-	window.addEventListener('hashchange', hashUpdate)
-	hashUpdate()
+const element = <
+	K extends keyof HTMLElementTagNameMap
+>(name: K): HTMLElementTagNameMap[K] => document.getElementsByTagName(name)[0]
 
-	input.addEventListener('keydown', update)
-	input.addEventListener('keyup', update)
-	input.addEventListener('change', update)
-	input.addEventListener('blur', update)
-	input.addEventListener('compositionend', update)
-})
+const call = event(
+	document,
+	['DOMContentLoaded'],
+	once(() => {
+		const img = element('img')
+		const input = element('input')
+
+		const update = event(
+			input,
+			['keydown', 'keyup', 'change', 'blur', 'compositionend'],
+			debounce(() => (img.src = qrcode(input.value || '')), 150),
+		)
+
+		event(window, ['hashchange'], () => {
+			input.value = window.location.hash.substring(1)
+			update()
+			next(
+				() => input.focus(),
+				() => input.select(),
+			)
+		})()
+	}),
+)
+
+if (document.readyState !== 'loading') call()
