@@ -2,43 +2,72 @@ name: Bulldozer
 
 on:
   push:
-    branches:
-      - master
+    branches-ignore:
+      - gh-pages
 
 jobs:
-  build:
+  is-master:
+    runs-on: ubuntu-latest
+    steps:
+    - run: >
+        test "$GITHUB_REF" = "refs/heads/master"
 
+  build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version:
-          - 12.x
+          - 13.x
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: npm install, build, and test
-      run: npm ci && npm run build
+    - name: npm install
+      run: npm ci
       env:
         CI: true
 
-    - name: pushu
-      run: |
-        git checkout --orphan gh-pages &&
-        git reset &&
-        git add dist &&
-        git clean -df &&
-        git checkout -- . &&
-        mv dist/* . &&
-        rm -d dist &&
+    - name: npm build
+      run: npm run build
+      env:
+        CI: true
 
+    - uses: actions/upload-artifact@v1
+      with:
+        name: dist
+        path: dist
+
+
+  deploy:
+    needs:
+    - build
+    - is-master
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        ref: gh-pages
+
+    - run: >
+        rm -rf * &&
+        echo qr.xnu.kr > CNAME
+
+    - uses: actions/download-artifact@v1
+      with:
+        name: dist
+        path: .
+
+    - name: pushu
+      run: >
         git config user.email action@github.com &&
-        git config user.name 'Github Actions' &&
+        git config user.name 'Ship it parrot' &&
         git add --all && git commit -m '[ci skip]' &&
-        git push https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git HEAD:gh-pages --force
+        git push origin HEAD
