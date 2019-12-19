@@ -33,12 +33,23 @@ whenLoaded(() => {
 		img.src = qrcode(input.value || '')
 	}, 150)
 
-	input.focus()
+	const hashUpdate = (): void => {
+		input.value = window.location.hash.substring(1)
+		update()
+		window.requestAnimationFrame(() => {
+			input.focus()
+			window.requestAnimationFrame(() => {
+				input.select()
+			})
+		})
+	}
+
+	window.addEventListener('hashchange', hashUpdate)
+	hashUpdate()
 
 	input.addEventListener('keydown', update)
 	input.addEventListener('keyup', update)
 	input.addEventListener('change', update)
 	input.addEventListener('blur', update)
 	input.addEventListener('compositionend', update)
-	update()
 })
