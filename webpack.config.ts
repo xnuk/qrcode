@@ -67,7 +67,7 @@ export default {
 	optimization: {
 		minimizer: [new TerserPlugin({
 			terserOptions: {
-				ecma: 5,
+				ecma: 7,
 				warnings: true,
 				mangle: {
 					properties: true,
