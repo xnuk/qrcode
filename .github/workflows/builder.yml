@@ -40,8 +40,8 @@ jobs:
 
     - uses: actions/upload-artifact@v1
       with:
-        name: dist
-        path: dist
+        name: index.min.html
+        path: dist/index.html
 
 
   deploy:
@@ -62,7 +62,7 @@ jobs:
 
     - uses: actions/download-artifact@v1
       with:
-        name: dist
+        name: index.min.html
         path: .
 
     - name: pushu
