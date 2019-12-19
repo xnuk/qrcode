@@ -74,7 +74,7 @@ export default {
 					eval: true,
 				},
 				compress: {
-					// booleans_as_integers: true,
+					booleans_as_integers: true,
 					drop_console: true,
 					expression: true,
 					hoist_funs: true,
