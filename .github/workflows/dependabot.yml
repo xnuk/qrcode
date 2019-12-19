@@ -8,8 +8,9 @@ jobs:
     steps:
       - name: Approve pull request
         if: github.actor == 'dependabot[bot]'
-        uses: andrewmusgrave/automatic-pull-request-review@0.0.2
-        with:
-          repo-token: '${{ secrets.GITHUB_TOKEN }}'
-          event: APPROVE
-          body: '@dependabot merge'
+        run: >
+          curl -X POST
+          -H 'Content-Type: application/json'
+          -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}'
+          "https://api.github.com/repos/${{ github.repository }}/pulls/$(echo $GITHUB_REF | tr -dc '0-9')/reviews"
+          -d '{"body": "@dependabot merge", "event": "APPROVE"}'
