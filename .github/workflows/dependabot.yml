@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Approve pull request
-        if: github.actor == 'dependabot-preview'
+        if: startsWith(github.actor, 'dependabot')
         run: >
           curl -X POST
           -H 'Content-Type: application/json'
