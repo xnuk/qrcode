@@ -6,12 +6,6 @@ on:
       - gh-pages
 
 jobs:
-  is-master:
-    runs-on: ubuntu-latest
-    steps:
-    - run: >
-        test "$GITHUB_REF" = "refs/heads/master"
-
   build:
     runs-on: ubuntu-latest
 
@@ -47,8 +41,8 @@ jobs:
   deploy:
     needs:
     - build
-    - is-master
     runs-on: ubuntu-latest
+    if: github.ref != 'master'
 
     steps:
     - uses: actions/checkout@v2
