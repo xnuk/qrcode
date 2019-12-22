@@ -60,8 +60,9 @@ jobs:
         path: .
 
     - name: pushu
-      run: >
-        git config user.email action@github.com &&
-        git config user.name 'Ship it parrot' &&
-        git add --all && git commit -m '[ci skip]' &&
+      run: |
+        git config user.email action@github.com
+        git config user.name 'Ship it parrot'
+        git add --all
+        git commit -m '[ci skip]' || true
         git push origin HEAD
