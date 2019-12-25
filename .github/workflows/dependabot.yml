@@ -11,6 +11,6 @@ jobs:
         run: >
           curl -X POST
           -H 'Content-Type: application/json'
-          -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}'
+          -H 'Authorization: token ${{ secrets.GITHUB_USER_TOKEN }}'
           "https://api.github.com/repos/${{ github.repository }}/pulls/$(echo $GITHUB_REF | tr -dc '0-9')/reviews"
           -d '{"body": "@dependabot merge", "event": "APPROVE"}'
