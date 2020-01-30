@@ -13,7 +13,7 @@
   "author": "Xnuk Shuman",
   "license": "BSD-3-Clause",
   "devDependencies": {
-    "@types/html-webpack-plugin": "^3.2.1",
+    "@types/html-webpack-plugin": "^3.2.2",
     "@types/mini-css-extract-plugin": "^0.9.0",
     "@types/optimize-css-assets-webpack-plugin": "^5.0.1",
     "@types/terser-webpack-plugin": "^2.2.0",
