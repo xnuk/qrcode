@@ -1,5 +1,8 @@
 import { qrcode } from './qrcode'
 
+Object.freeze(Object.prototype)
+Object.freeze(Array.prototype)
+
 const debounce = (cb: () => void, timeout: number): (() => void) => {
 	let t = 0
 	let lock = false
