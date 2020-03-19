@@ -255,8 +255,8 @@ const getmaxdatalen = (ver: number, mode: MODE, ecclevel: ECCLEVEL): number => {
 // encode function below (as it depends on the version and ECC level too).
 const validatedata = (
 	mode: MODE,
-	data: string | number[],
-): string | number[] | null => {
+	data: string | Uint8Array,
+): string | Uint8Array | null => {
 	switch (mode) {
 	case MODE_NUMERIC:
 		if (!(
@@ -296,7 +296,7 @@ const validatedata = (
 					)
 				}
 			}
-			return newdata
+			return new Uint8Array(newdata)
 		} else {
 			return data
 		}
@@ -309,7 +309,7 @@ const validatedata = (
 const encode = (
 	ver: number,
 	mode: MODE,
-	data: string | number[],
+	data: string | Uint8Array,
 	maxbuflen: number,
 ): number[] => {
 	const buf = []
@@ -720,7 +720,7 @@ const evaluatematrix = (matrix: Bit[][]): number => {
 // returns the fully encoded QR code matrix which contains given data.
 // it also chooses the best mask automatically when mask is -1.
 const generate = (
-	data: string | number[],
+	data: string | Uint8Array,
 	ver: Version,
 	mode: MODE,
 	ecclevel: ECCLEVEL,
@@ -760,7 +760,7 @@ const generate = (
 	return matrix
 }
 
-const guessMode = (data: string | number[]): MODE => {
+const guessMode = (data: string | Uint8Array): MODE => {
 	if (typeof data !== 'string') return MODE_OCTET
 
 	if (data.match(NUMERIC_REGEXP)) return MODE_NUMERIC
@@ -774,7 +774,9 @@ const guessMode = (data: string | number[]): MODE => {
 }
 
 const guessVersion = (
-	data: string | number[], mode: MODE, ecclevel: ECCLEVEL,
+	data: string | Uint8Array,
+	mode: MODE,
+	ecclevel: ECCLEVEL,
 ): Version | null => {
 	let version: Version = 1
 	const len = data.length
@@ -795,12 +797,15 @@ const guessVersion = (
 // - ecclevel: one of 'L', 'M', 'Q', 'H'. defaults to 'L'.
 // - mask: an integer in [0,7]. when omitted (or -1) the best mask is chosen.
 //
-export const generateFromText = (data: string | number[], options: Partial<{
-	version: Version
-	mode: MODE
-	ecclevel: ECCLEVEL
-	mask: Mask
-}> = {}): Bit[][] => {
+export const generateFromText = (
+	data: string | Uint8Array,
+	options: Partial<{
+		version: Version
+		mode: MODE
+		ecclevel: ECCLEVEL
+		mask: Mask
+	}> = {},
+): Bit[][] => {
 	const ecclevel = options.ecclevel != null ? options.ecclevel : ECCLEVEL_L
 	const mode = options.mode != null ? options.mode : guessMode(data)
 	const mask = options.mask
