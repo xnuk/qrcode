@@ -3,7 +3,6 @@ import { ProgressPlugin } from 'webpack'
 
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import HtmlWebpackInlineSourcePlugin from 'html-webpack-inline-source-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 
@@ -16,21 +15,19 @@ const typescript = {
 
 export default {
 	mode: 'production',
-	entry: path('src', 'index.ts'),
 
 	output: {
 		path: path('dist'),
 	},
 
 	plugins: [
-		new ProgressPlugin,
-		new MiniCssExtractPlugin({ ignoreOrder: false }),
 		new HtmlWebpackPlugin({
 			template: path('src', 'index.html'),
-			inlineSource: '.(js|css)$',
-			filename: 'index.html'
+			filename: 'index.html',
+			inject: false,
 		}),
-		new HtmlWebpackInlineSourcePlugin(),
+		new MiniCssExtractPlugin({ ignoreOrder: false }),
+		new ProgressPlugin,
 	],
 
 	module: {

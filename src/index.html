@@ -1,3 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport"
-content="width=device-width,initial-scale=1.0"></head><input
-placeholder="Type here..."><img>
+<!DOCTYPE html><html lang="en"><meta charset="utf-8"><meta name="viewport"
+content="width=device-width,initial-scale=1"><%
+for (path of htmlWebpackPlugin.files.css) { %><style><%=
+compilation.assets[path.substr(htmlWebpackPlugin.files.publicPath.length)].source()
+%><% } %></style><input
+placeholder="Type here..."><img><%
+for (path of htmlWebpackPlugin.files.js) { %><script><%=
+compilation.assets[path.substr(htmlWebpackPlugin.files.publicPath.length)].source()
+%><% } %></script>
