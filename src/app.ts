@@ -1,69 +1,34 @@
 import { qrcode } from './qrcode'
+;[Object, Array, String, Number].forEach(v => Object.freeze(v))
 
-Object.freeze(Object.prototype)
-Object.freeze(Array.prototype)
+const element = <K extends keyof HTMLElementTagNameMap>(
+	name: K,
+): HTMLElementTagNameMap[K] => document.getElementsByTagName(name)[0]
 
-const debounce = (cb: () => void, timeout: number): (() => void) => {
-	let t = 0
-	let lock = false
-	return (): void => {
-		if (lock) {
-			clearTimeout(t)
-		}
-		lock = true
-		t = (setTimeout(() => {
-			lock = false
-			cb()
-		}, timeout) as unknown) as number
-	}
-}
+const img = element('img')
+const input = element('input')
 
-const event = (
-	target: Window | HTMLElement | Document,
-	types: string[],
-	func: () => void,
-): typeof func => {
-	types.forEach(key => target.addEventListener(key, func, false))
-	return func
-}
+const raf = window.requestAnimationFrame
 
-const once = (func?: () => void) => (): void =>
-	func && (func(), (func = undefined))
+const update = (): unknown => raf(() => (img.src = qrcode(input.value || '')))
 
-const next = (func: () => void, ...funcs: (() => void)[]): void => {
-	window.requestAnimationFrame(() => {
-		func()
-		const first = funcs.shift()
-		first && next(first, ...funcs)
+;[
+	'keydown',
+	'keyup',
+	'change',
+	'blur',
+	'paste',
+	'compositionupdate',
+	'compositionend',
+].forEach(key => input.addEventListener(key, update, false))
+
+window.addEventListener('hashchange', () => {
+	input.value = window.location.hash.substring(1)
+	update()
+	raf(() => {
+		input.focus()
+		raf(() => input.select())
 	})
-}
+})
 
-const element = <
-	K extends keyof HTMLElementTagNameMap
->(name: K): HTMLElementTagNameMap[K] => document.getElementsByTagName(name)[0]
-
-const call = event(
-	document,
-	['DOMContentLoaded'],
-	once(() => {
-		const img = element('img')
-		const input = element('input')
-
-		const update = event(
-			input,
-			['keydown', 'keyup', 'change', 'blur', 'compositionend'],
-			debounce(() => (img.src = qrcode(input.value || '')), 150),
-		)
-
-		event(window, ['hashchange'], () => {
-			input.value = window.location.hash.substring(1)
-			update()
-			next(
-				() => input.focus(),
-				() => input.select(),
-			)
-		})()
-	}),
-)
-
-if (document.readyState !== 'loading') call()
+update()
