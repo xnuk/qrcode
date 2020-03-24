@@ -22,14 +22,15 @@ const update = (): unknown => raf(() => (img.src = qrcode(input.value || '')))
 	'compositionend',
 ].forEach(key => input.addEventListener(key, update, false))
 
-window.addEventListener('hashchange', () => {
+const hashchange = () => {
 	input.value = window.location.hash.substring(1)
 	update()
 	raf(() => {
 		input.focus()
 		raf(() => input.select())
 	})
-})
+}
 
-update()
-input.focus()
+window.addEventListener('hashchange', hashchange)
+
+raf(hashchange)
