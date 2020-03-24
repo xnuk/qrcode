@@ -32,3 +32,4 @@ window.addEventListener('hashchange', () => {
 })
 
 update()
+input.focus()
