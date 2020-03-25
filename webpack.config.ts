@@ -16,8 +16,13 @@ const typescript = {
 export default {
 	mode: 'production',
 
+	entry: {
+		qrcode: path('src', 'qrcode.ts'),
+		index: path('src', 'index.ts'),
+	},
 	output: {
 		path: path('dist'),
+		filename: '[name].js',
 	},
 
 	plugins: [

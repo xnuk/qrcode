@@ -1,9 +1,13 @@
 <!DOCTYPE html><html lang="en"><meta charset="utf-8"><meta name="viewport"
-content="width=device-width,initial-scale=1"><%
-for (path of htmlWebpackPlugin.files.css) { %><style><%=
-compilation.assets[path.substr(htmlWebpackPlugin.files.publicPath.length)].source()
-%><% } %></style><input
-placeholder="Type here..."><img><%
-for (path of htmlWebpackPlugin.files.js) { %><script><%=
-compilation.assets[path.substr(htmlWebpackPlugin.files.publicPath.length)].source()
-%><% } %></script>
+content="width=device-width,initial-scale=1"><meta
+http-equiv="Content-Security-Policy"
+content="default-src 'none';script-src 'unsafe-inline';style-src 'unsafe-inline';img-src data:"><style><%=
+compilation.assets[
+	'index.css'.substr(htmlWebpackPlugin.files.publicPath.length)
+].source()
+%></style><input
+placeholder="Type here..."><img><script><%=
+compilation.assets[
+	'index.js'.substr(htmlWebpackPlugin.files.publicPath.length)
+].source()
+%></script>
