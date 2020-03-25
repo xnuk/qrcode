@@ -78,18 +78,6 @@ const writeUInt16LE = (
 	return array
 }
 
-const concat = (args: Uint8Array[]): Uint8Array => {
-	const len = args.map(v => v.length).reduce((a, b) => a + b)
-	const arr = new Uint8Array(len)
-	let index = 0
-	args.forEach(v => {
-		arr.set(v, index)
-		index += v.length
-	})
-
-	return arr
-}
-
 type Bit = 0 | 1
 
 const bitsToBytes = (bits: Bit[]): Uint8Array => {
@@ -108,7 +96,7 @@ const bitsToBytes = (bits: Bit[]): Uint8Array => {
 	return buf
 }
 
-export const render = (data: Bit[][]): Uint8Array => {
+export const render = (data: Bit[][]): Uint8Array[] => {
 	const width = data[0].length
 	const height = data.length
 
@@ -129,5 +117,5 @@ export const render = (data: Bit[][]): Uint8Array => {
 
 	dataBytes.unshift(newBuffer)
 
-	return concat(dataBytes)
+	return dataBytes
 }
