@@ -27,6 +27,13 @@ rules:
     - error
     - tab
     - SwitchCase: 0
+      FunctionExpression:
+        parameters: first
+      FunctionDeclaration:
+        parameters: first
+      CallExpression:
+        arguments: first
+      flatTernaryExpressions: true
   no-tabs:
     - error
     - allowIndentationTabs: true
@@ -58,6 +65,9 @@ rules:
       argsIgnorePattern: '^_+$'
       caughtErrors: all
   '@typescript-eslint/no-unused-vars': *unused_vars
+  operator-linebreak:
+    - error
+    - before
   # member-delimiter-style:
   #   - error
   #   - multiline:

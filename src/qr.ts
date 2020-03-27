@@ -241,8 +241,8 @@ const getmaxdatalen = /*@__PURE__*/ (
 	switch (mode) {
 	case MODE_NUMERIC:
 		return (
-			((nbits / 10) | 0) * 3 +
-				(nbits % 10 < 4 ? 0 : nbits % 10 < 7 ? 1 : 2)
+			((nbits / 10) | 0) * 3
+				+ (nbits % 10 < 4 ? 0 : nbits % 10 < 7 ? 1 : 2)
 		)
 	case MODE_ALPHANUMERIC:
 		return ((nbits / 11) | 0) * 2 + (nbits % 11 < 6 ? 0 : 1)
@@ -295,8 +295,8 @@ const encode = /*@__INLINE__*/ (
 		if (typeof data !== 'string') throw new Error('')
 		for (let i = 1; i < datalen; i += 2) {
 			pack(
-				ALPHANUMERIC_MAP_INDEX(data[i - 1]) * 45 +
-					ALPHANUMERIC_MAP_INDEX(data[i]),
+				ALPHANUMERIC_MAP_INDEX(data[i - 1]) * 45
+					+ ALPHANUMERIC_MAP_INDEX(data[i]),
 				11,
 			)
 		}
@@ -483,8 +483,9 @@ const makebasematrix = (
 		let k = 0
 		for (let i = 0; i < 6; ++i) {
 			for (let j = 0; j < 3; ++j) {
-				matrix[i][n - 11 + j] = matrix[n - 11 + j][i] =
-					((code >> k++) & 1) as Bit
+				const bit = ((code >> k++) & 1) as Bit
+				matrix[i][n - 11 + j] = bit
+				matrix[n - 11 + j][i] = bit
 				reserved[i][n - 11 + j] = reserved[n - 11 + j][i] = 1
 			}
 		}
@@ -549,11 +550,13 @@ const putformatinfo = (
 	const n = matrix.length
 	const code = augumentbch((ecclevel << 3) | mask, 5, 0x537, 10) ^ 0x5412
 
+	// prettier-ignore
 	const rows = [
 		0, 1, 2, 3, 4, 5, 7, 8,
 		n - 7, n - 6, n - 5, n - 4, n - 3, n - 2, n - 1,
 	]
 
+	// prettier-ignore
 	const cols = [
 		n - 1, n - 2, n - 3, n - 4, n - 5, n - 6, n - 7, n - 8,
 		7, 5, 4, 3, 2, 1, 0,
@@ -607,11 +610,11 @@ const evaluatematrix = (matrix: Bit[][]): number => {
 		for (let i = 5; i < groups.length; i += 2) {
 			const p = groups[i]
 			if (
-				groups[i - 1] === p &&
-				groups[i - 2] === 3 * p &&
-				groups[i - 3] === p &&
-				groups[i - 4] === p &&
-				(groups[i - 5] >= 4 * p || groups[i + 1] >= 4 * p)
+				groups[i - 1] === p
+				&& groups[i - 2] === 3 * p
+				&& groups[i - 3] === p
+				&& groups[i - 4] === p
+				&& (groups[i - 5] >= 4 * p || groups[i + 1] >= 4 * p)
 			) {
 				// this part differs from zxing...
 				score += PENALTY_FINDERLIKE
@@ -630,9 +633,9 @@ const evaluatematrix = (matrix: Bit[][]): number => {
 		const rowGroups = [0] // the first empty group of white
 		for (let j = 0; j < n;) {
 			let k
-			for (k = 0; j < n && row[j]; ++k)++j
+			for (k = 0; j < n && row[j]; ++k) ++j
 			rowGroups.push(k)
-			for (k = 0; j < n && !row[j]; ++k)++j
+			for (k = 0; j < n && !row[j]; ++k) ++j
 			rowGroups.push(k)
 		}
 		score += evaluategroup(rowGroups)
@@ -641,9 +644,9 @@ const evaluatematrix = (matrix: Bit[][]): number => {
 		const columnGroups = [0]
 		for (let j = 0; j < n;) {
 			let k
-			for (k = 0; j < n && matrix[j][i]; ++k)++j
+			for (k = 0; j < n && matrix[j][i]; ++k) ++j
 			columnGroups.push(k)
-			for (k = 0; j < n && !matrix[j][i]; ++k)++j
+			for (k = 0; j < n && !matrix[j][i]; ++k) ++j
 			columnGroups.push(k)
 		}
 		score += evaluategroup(columnGroups)
