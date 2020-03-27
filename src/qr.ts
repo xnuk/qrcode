@@ -156,15 +156,15 @@ const MASKFUNCS: ((i: number, j: number) => boolean)[] = [
 
 // returns true when the version information has to be embeded.
 // eslint-disable-next-line spaced-comment
-const needsverinfo = /*@__INLINE__*/ (ver: number): boolean => ver > 6
+const needsverinfo = /*@__INLINE__*/ (ver: Version): boolean => ver > 6
 
 // returns the size of entire QR code for given version.
 // eslint-disable-next-line spaced-comment
-const getsizebyver = /*@__INLINE__*/ (ver: number): number => 4 * ver + 17
+const getsizebyver = /*@__INLINE__*/ (ver: Version): number => 4 * ver + 17
 
 // returns the number of bits available for code words in this version.
 // eslint-disable-next-line spaced-comment
-const nfullbits = /*@__INLINE__*/ (ver: number): number => {
+const nfullbits = /*@__INLINE__*/ (ver: Version): number => {
 	/*
 	 * |<--------------- n --------------->|
 	 * |        |<----- n-17 ---->|        |
@@ -210,7 +210,7 @@ const nfullbits = /*@__INLINE__*/ (ver: number): number => {
 
 // returns the number of bits available for data portions (i.e. excludes ECC
 // bits but includes mode and length bits) in this version and ECC level.
-const ndatabits = (ver: number, ecclevel: ECCLEVEL): number => {
+const ndatabits = (ver: Version, ecclevel: ECCLEVEL): number => {
 	let nbits = nfullbits(ver) & ~7 // no sub-octet code words
 	const v = VERSIONS[ver]
 	nbits -= 8 * v[0][ecclevel] * v[1][ecclevel] // ecc bits
@@ -219,7 +219,7 @@ const ndatabits = (ver: number, ecclevel: ECCLEVEL): number => {
 
 // returns the number of bits required for the length of data.
 // (cf. Table 3 in JIS X 0510:2004 p. 16)
-const ndatalenbits = (ver: number, mode: MODE): number => {
+const ndatalenbits = (ver: Version, mode: MODE): number => {
 	switch (mode) {
 	case MODE_NUMERIC:
 		return ver < 10 ? 10 : ver < 27 ? 12 : 14
@@ -233,7 +233,7 @@ const ndatalenbits = (ver: number, mode: MODE): number => {
 // returns the maximum length of data possible in given configuration.
 // eslint-disable-next-line spaced-comment
 const getmaxdatalen = /*@__PURE__*/ (
-	ver: number,
+	ver: Version,
 	mode: MODE,
 	ecclevel: ECCLEVEL,
 ): number => {
@@ -256,7 +256,7 @@ const getmaxdatalen = /*@__PURE__*/ (
 // performed, and everything has to be checked before calling this function.
 // eslint-disable-next-line spaced-comment
 const encode = /*@__INLINE__*/ (
-	ver: number,
+	ver: Version,
 	mode: MODE,
 	data: string | Uint8Array,
 	maxbuflen: number,
@@ -428,7 +428,7 @@ const augumentbch = function (
 // intentional (no initialization needed!), and putdata below will fill
 // the remaining ones.
 const makebasematrix = (
-	ver: number,
+	ver: Version,
 ): { matrix: Bit[][], reserved: Bit[][], } => {
 	const v = VERSIONS[ver]
 	const n = getsizebyver(ver)
@@ -730,7 +730,7 @@ const guessVersion = /*@__INLINE__*/ (
 	let version: Version = 1
 	const len = data.length
 	for (; version <= 40; ++version) {
-		if (len <= getmaxdatalen(version, mode, ecclevel)) {
+		if (len <= getmaxdatalen(version as Version, mode, ecclevel)) {
 			return (): Bit[][] =>
 				generate(data, version as Version, mode, ecclevel)
 		}
