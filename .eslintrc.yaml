@@ -42,10 +42,6 @@ rules:
   new-parens:
     - error
     - never
-  '@typescript-eslint/no-unused-vars':
-    - error
-    - argsIgnorePattern: '^_+$'
-      args: all
   '@typescript-eslint/member-delimiter-style':
     - error
     - multiline:
@@ -54,6 +50,14 @@ rules:
       singleline:
         delimiter: comma
         requireLast: true
+  no-unused-vars: &unused_vars
+    - error
+    - vars: all
+      varsIgnorePattern: '^___'
+      args: all
+      argsIgnorePattern: '^_+$'
+      caughtErrors: all
+  '@typescript-eslint/no-unused-vars': *unused_vars
   # member-delimiter-style:
   #   - error
   #   - multiline:

@@ -2,10 +2,11 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"rootDir": "src",
-		"outDir": "dist",
-		"module": "commonjs",
 		"target": "es2016",
-		"lib": ["dom", "es2017"],
+		"lib": [
+			"dom",
+			"es2017"
+		],
 		"sourceMap": false,
 		"allowJs": false,
 		"moduleResolution": "node",
@@ -16,8 +17,12 @@
 		"noFallthroughCasesInSwitch": true,
 		"forceConsistentCasingInFileNames": true,
 		"newLine": "lf",
-		"removeComments": true,
+		"removeComments": false,
 		"esModuleInterop": true
 	},
-	"exclude": ["./webpack.config.ts", "./dist/", "./node_modules/"]
+	"exclude": [
+		"./bin/",
+		"./dist/",
+		"./node_modules/"
+	]
 }

@@ -28,6 +28,8 @@ type Bit = 0 | 1
 //
 // the number in this table (in particular, [0]) does not exactly match with
 // the numbers in the specficiation. see augumenteccs below for the reason.
+
+// prettier-ignore
 const VERSIONS = [
 	null as never,
 	[[10, 7, 17, 13], [1, 1, 1, 1], []],
@@ -72,6 +74,7 @@ const VERSIONS = [
 	[[28, 30, 30, 30], [49, 25, 81, 68], [4, 28, 56, 84, 112, 140, 168]],
 ] as const
 
+// prettier-ignore
 export type Version =
 	| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
 	| 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20
@@ -91,11 +94,6 @@ export type MODE =
 	| typeof MODE_NUMERIC
 	| typeof MODE_ALPHANUMERIC
 	| typeof MODE_OCTET
-
-// validation regexps
-const NUMERIC_REGEXP = /^\d*$/
-const ALPHANUMERIC_REGEXP = /^[A-Za-z0-9 $%*+\-./:]*$/
-const ALPHANUMERIC_OUT_REGEXP = /^[A-Z0-9 $%*+\-./:]*$/
 
 // ECC levels (cf. Table 22 in JIS X 0510:2004 p. 45)
 export const ECCLEVEL_L = 1
@@ -157,13 +155,16 @@ const MASKFUNCS: ((i: number, j: number) => boolean)[] = [
 ]
 
 // returns true when the version information has to be embeded.
-const needsverinfo = (ver: number): boolean => ver > 6
+// eslint-disable-next-line spaced-comment
+const needsverinfo = /*@__INLINE__*/ (ver: number): boolean => ver > 6
 
 // returns the size of entire QR code for given version.
-const getsizebyver = (ver: number): number => 4 * ver + 17
+// eslint-disable-next-line spaced-comment
+const getsizebyver = /*@__INLINE__*/ (ver: number): number => 4 * ver + 17
 
 // returns the number of bits available for code words in this version.
-const nfullbits = (ver: number): number => {
+// eslint-disable-next-line spaced-comment
+const nfullbits = /*@__INLINE__*/ (ver: number): number => {
 	/*
 	 * |<--------------- n --------------->|
 	 * |        |<----- n-17 ---->|        |
@@ -226,12 +227,16 @@ const ndatalenbits = (ver: number, mode: MODE): number => {
 		return ver < 10 ? 9 : ver < 27 ? 11 : 13
 	case MODE_OCTET:
 		return ver < 10 ? 8 : 16
-		// case MODE.KANJI: return ver < 10 ? 8 : ver < 27 ? 10 : 12
 	}
 }
 
 // returns the maximum length of data possible in given configuration.
-const getmaxdatalen = (ver: number, mode: MODE, ecclevel: ECCLEVEL): number => {
+// eslint-disable-next-line spaced-comment
+const getmaxdatalen = /*@__PURE__*/ (
+	ver: number,
+	mode: MODE,
+	ecclevel: ECCLEVEL,
+): number => {
 	const nbits = ndatabits(ver, ecclevel) - 4 - ndatalenbits(ver, mode) // 4 for mode bits
 	switch (mode) {
 	case MODE_NUMERIC:
@@ -243,70 +248,14 @@ const getmaxdatalen = (ver: number, mode: MODE, ecclevel: ECCLEVEL): number => {
 		return ((nbits / 11) | 0) * 2 + (nbits % 11 < 6 ? 0 : 1)
 	case MODE_OCTET:
 		return (nbits / 8) | 0
-		// case MODE.KANJI: return (nbits / 13) | 0
-	}
-}
-
-// checks if the given data can be encoded in given mode, and returns
-// the converted data for the further processing if possible. otherwise
-// returns null.
-//
-// this function does not check the length of data; it is a duty of
-// encode function below (as it depends on the version and ECC level too).
-const validatedata = (
-	mode: MODE,
-	data: string | Uint8Array,
-): string | Uint8Array | null => {
-	switch (mode) {
-	case MODE_NUMERIC:
-		if (!(
-			typeof data === 'string' &&
-				data.match(NUMERIC_REGEXP)
-		)) return null
-		return data
-
-	case MODE_ALPHANUMERIC:
-		if (!(
-			typeof data === 'string' && data.match(ALPHANUMERIC_REGEXP)
-		)) return null
-		return data.toUpperCase()
-
-	case MODE_OCTET:
-		if (typeof data === 'string') {
-			// encode as utf-8 string
-			const newdata: number[] = []
-			for (let i = 0; i < data.length; ++i) {
-				const ch = data.charCodeAt(i)
-				if (ch < 0x80) {
-					newdata.push(ch)
-				} else if (ch < 0x800) {
-					newdata.push(0xc0 | (ch >> 6), 0x80 | (ch & 0x3f))
-				} else if (ch < 0x10000) {
-					newdata.push(
-						0xe0 | (ch >> 12),
-						0x80 | ((ch >> 6) & 0x3f),
-						0x80 | (ch & 0x3f),
-					)
-				} else {
-					newdata.push(
-						0xf0 | (ch >> 18),
-						0x80 | ((ch >> 12) & 0x3f),
-						0x80 | ((ch >> 6) & 0x3f),
-						0x80 | (ch & 0x3f),
-					)
-				}
-			}
-			return new Uint8Array(newdata)
-		} else {
-			return data
-		}
 	}
 }
 
 // returns the code words (sans ECC bits) for given data and configurations.
 // requires data to be preprocessed by validatedata. no length check is
 // performed, and everything has to be checked before calling this function.
-const encode = (
+// eslint-disable-next-line spaced-comment
+const encode = /*@__INLINE__*/ (
 	ver: number,
 	mode: MODE,
 	data: string | Uint8Array,
@@ -346,20 +295,19 @@ const encode = (
 		if (typeof data !== 'string') throw new Error('')
 		for (let i = 1; i < datalen; i += 2) {
 			pack(
-				ALPHANUMERIC_MAP_INDEX(data.charAt(i - 1)) * 45 +
-					ALPHANUMERIC_MAP_INDEX(data.charAt(i)),
+				ALPHANUMERIC_MAP_INDEX(data[i - 1]) * 45 +
+					ALPHANUMERIC_MAP_INDEX(data[i]),
 				11,
 			)
 		}
 		if (datalen % 2 === 1) {
-			pack(ALPHANUMERIC_MAP_INDEX(data.charAt(i - 1)), 6)
+			pack(ALPHANUMERIC_MAP_INDEX(data[i - 1]), 6)
 		}
 		break
 
 	case MODE_OCTET:
-		if (typeof data === 'string') throw new Error('')
 		for (let i = 0; i < datalen; ++i) {
-			pack(data[i], 8)
+			pack((data as Uint8Array)[i], 8)
 		}
 		break
 	}
@@ -557,7 +505,7 @@ const putdata = (
 	let k = 0
 	let dir = -1
 	for (let i = n - 1; i >= 0; i -= 2) {
-		if (i === 6)--i // skip the entire timing pattern column
+		if (i === 6) --i // skip the entire timing pattern column
 		let jj = dir < 0 ? n - 1 : 0
 		for (let j = 0; j < n; ++j) {
 			for (let ii = i; ii > i - 2; --ii) {
@@ -721,101 +669,80 @@ const evaluatematrix = (matrix: Bit[][]): number => {
 // it also chooses the best mask automatically when mask is -1.
 const generate = (
 	data: string | Uint8Array,
-	ver: Version,
+	version: Version,
 	mode: MODE,
 	ecclevel: ECCLEVEL,
-	mask: number | null | undefined,
 ): Bit[][] => {
-	const v = VERSIONS[ver]
-	let buf = encode(ver, mode, data, ndatabits(ver, ecclevel) >> 3)
+	const v = VERSIONS[version]
+	let buf = encode(version, mode, data, ndatabits(version, ecclevel) >> 3)
 	buf = augumenteccs(buf, v[1][ecclevel], GF256_GENPOLY[v[0][ecclevel]])
 
-	const result = makebasematrix(ver)
+	const result = makebasematrix(version)
 	const matrix = result.matrix
 	const reserved = result.reserved
 	putdata(matrix, reserved, buf)
 
-	if (mask == null) {
-		// find the best mask
-		maskdata(matrix, reserved, 0)
-		putformatinfo(matrix, ecclevel, 0)
-		let bestmask = 0
-		let bestscore = evaluatematrix(matrix)
-		maskdata(matrix, reserved, 0)
-		for (mask = 1; mask < 8; ++mask) {
-			maskdata(matrix, reserved, mask)
-			putformatinfo(matrix, ecclevel, mask)
-			const score = evaluatematrix(matrix)
-			if (bestscore > score) {
-				bestscore = score
-				bestmask = mask
-			}
-			maskdata(matrix, reserved, mask)
+	// eslint-disable-next-line spaced-comment
+	const scoreMask = /*@__PURE__*/ (mask: Mask): number => {
+		maskdata(matrix, reserved, mask)
+
+		putformatinfo(matrix, ecclevel, mask)
+		const score = evaluatematrix(matrix)
+
+		maskdata(matrix, reserved, mask)
+
+		return score
+	}
+	// find the best mask
+	let bestmask: Mask = 0
+	let bestscore = scoreMask(bestmask)
+
+	for (let mask = 1; mask < 8; ++mask) {
+		const score = scoreMask(bestmask)
+		if (bestscore > score) {
+			bestscore = score
+			bestmask = mask as Mask
 		}
-		mask = bestmask
 	}
 
-	maskdata(matrix, reserved, mask)
-	putformatinfo(matrix, ecclevel, mask)
+	maskdata(matrix, reserved, bestmask)
+	putformatinfo(matrix, ecclevel, bestmask)
 	return matrix
 }
 
-const guessMode = (data: string | Uint8Array): MODE => {
-	if (typeof data !== 'string') return MODE_OCTET
-
-	if (data.match(NUMERIC_REGEXP)) return MODE_NUMERIC
-
-	// while encode supports case-insensitive
-	// encoding, we restrict the data to be
-	// uppercased when auto-selecting the mode.
-	if (data.match(ALPHANUMERIC_OUT_REGEXP)) return MODE_ALPHANUMERIC
-
-	return MODE_OCTET
-}
-
-const guessVersion = (
+// eslint-disable-next-line spaced-comment
+const guessVersion = /*@__INLINE__*/ (
 	data: string | Uint8Array,
-	mode: MODE,
 	ecclevel: ECCLEVEL,
-): Version | null => {
+): (() => Bit[][]) => {
+	let mode: MODE = MODE_OCTET
+
+	if (typeof data === 'string') {
+		if (/^\d*$/.test(data)) {
+			mode = MODE_NUMERIC
+		} else if (/^[A-Z0-9 $%*+\-./:]*$/.test(data)) {
+			mode = MODE_ALPHANUMERIC
+		} else {
+			data = (new TextEncoder).encode(data)
+		}
+	}
+
 	let version: Version = 1
 	const len = data.length
 	for (; version <= 40; ++version) {
 		if (len <= getmaxdatalen(version, mode, ecclevel)) {
-			return version as Version
+			return (): Bit[][] =>
+				generate(data, version as Version, mode, ecclevel)
 		}
 	}
-	return null
+
+	throw new Error('data is too large')
 }
 
-// the public interface is trivial; the options available are as follows:
-//
-// - version: an integer in [1,40]. when omitted (or -1) the smallest possible
-//   version is chosen.
-// - mode: one of 'numeric', 'alphanumeric', 'octet'. when omitted the smallest
-//   possible mode is chosen.
-// - ecclevel: one of 'L', 'M', 'Q', 'H'. defaults to 'L'.
-// - mask: an integer in [0,7]. when omitted (or -1) the best mask is chosen.
-//
-export const generateFromText = (
+// eslint-disable-next-line spaced-comment
+export const generateFromText = /*@__INLINE__*/ (
 	data: string | Uint8Array,
-	options: Partial<{
-		version: Version
-		mode: MODE
-		ecclevel: ECCLEVEL
-		mask: Mask
-	}> = {},
+	ecclevel: ECCLEVEL = ECCLEVEL_L,
 ): Bit[][] => {
-	const ecclevel = options.ecclevel != null ? options.ecclevel : ECCLEVEL_L
-	const mode = options.mode != null ? options.mode : guessMode(data)
-	const mask = options.mask
-	const ver = options.version
-
-	const newData = validatedata(mode, data)
-	if (newData == null) throw new Error('invalid data format')
-
-	const version = ver || guessVersion(newData, mode, ecclevel)
-	if (version == null) throw new Error('invalid version or data is too large')
-
-	return generate(newData, version, mode, ecclevel, mask)
+	return guessVersion(data, ecclevel)()
 }

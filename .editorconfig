@@ -1,6 +1,6 @@
 root = true
 
-[*.{ts,pug,sass}]
+[*.{ts,pug,sass,js,tsx,jsx,mjs,json}]
 indent_size = 4
 indent_style = tab
 insert_final_newline = true

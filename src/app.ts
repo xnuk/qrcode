@@ -1,5 +1,6 @@
 import { qrcode } from './qrcode'
-;[Object, Array, String, Number].forEach(v => Object.freeze(v))
+
+;[Object, Array, String, Number].map(v => Object.freeze(v))
 
 const element = <K extends keyof HTMLElementTagNameMap>(
 	name: K,
@@ -20,7 +21,7 @@ const update = (): unknown => raf(() => (img.src = qrcode(input.value || '')))
 	'paste',
 	'compositionupdate',
 	'compositionend',
-].forEach(key => input.addEventListener(key, update, false))
+].map(key => input.addEventListener(key, update, false))
 
 const hashchange = (): void => {
 	input.value = window.location.hash.substring(1)

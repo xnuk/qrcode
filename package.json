@@ -1,47 +1,42 @@
 {
-  "name": "qrcode",
-  "version": "1.0.0",
-  "description": "",
-  "main": "",
-  "scripts": {
-    "build": "NODE_ENV=production webpack"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/xnuk/qrcode"
-  },
-  "author": "Xnuk Shuman",
-  "license": "BSD-3-Clause",
-  "devDependencies": {
-    "@types/html-webpack-plugin": "^3.2.2",
-    "@types/mini-css-extract-plugin": "^0.9.1",
-    "@types/optimize-css-assets-webpack-plugin": "^5.0.1",
-    "@types/terser-webpack-plugin": "^2.2.0",
-    "@types/webpack": "^4.41.8",
-    "@types/webpack-subresource-integrity": "^1.2.0",
-    "@typescript-eslint/eslint-plugin": "^2.25.0",
-    "@typescript-eslint/parser": "^2.25.0",
-    "css-loader": "^3.4.2",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-loader": "^3.0.3",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "html-webpack-plugin": "^4.0.0",
-    "mini-css-extract-plugin": "^0.9.0",
-    "optimize-css-assets-webpack-plugin": "^5.0.3",
-    "prettier": "^2.0.2",
-    "sass": "^1.26.3",
-    "sass-loader": "^8.0.2",
-    "terser-webpack-plugin": "^2.3.5",
-    "ts-loader": "^6.2.2",
-    "ts-node": "^8.8.1",
-    "typescript": "^3.8.3",
-    "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
-  }
+	"name": "qrcode",
+	"version": "1.0.0",
+	"description": "",
+	"main": "",
+	"scripts": {
+		"build:script:rollup-config": "./bin/transpiler ./src/bin/rollup.config.ts rollup.config.js",
+		"build:script:rollup": "rollup -c",
+		"build:script": "run-s build:script:rollup-config build:script:rollup",
+		"build:style": "sass src/index.sass:dist/index.css --style compressed --no-source-map",
+		"build:html:template:script": "./bin/transpiler ./src/bin/html.ts ./bin/html",
+		"build:html:template": "./bin/html dist/index.css dist/index.js src/index.html > dist/index.html",
+		"build:html": "run-s build:html:template:script build:html:template",
+		"build:assets": "run-p build:script build:style",
+		"build": "run-s build:assets build:html"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/xnuk/qrcode"
+	},
+	"author": "Xnuk Shuman",
+	"license": "BSD-3-Clause",
+	"devDependencies": {
+		"@rollup/plugin-typescript": "^4.0.0",
+		"@types/node": "^12.12.31",
+		"@typescript-eslint/eslint-plugin": "^2.25.0",
+		"@typescript-eslint/parser": "^2.25.0",
+		"eslint": "^6.8.0",
+		"eslint-config-standard": "^14.1.1",
+		"eslint-plugin-import": "^2.20.1",
+		"eslint-plugin-node": "^11.0.0",
+		"eslint-plugin-prettier": "^3.1.2",
+		"eslint-plugin-promise": "^4.2.1",
+		"eslint-plugin-standard": "^4.0.1",
+		"npm-run-all": "^4.1.5",
+		"rollup": "^2.2.0",
+		"rollup-plugin-terser": "^5.3.0",
+		"sass": "^1.26.3",
+		"ts-node": "^8.8.1",
+		"typescript": "^3.8.3"
+	}
 }
