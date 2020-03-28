@@ -12,7 +12,7 @@ const { dirname } = require('path')
 let output = process.stdout
 
 if (outFile) {
-	mkdirSync(dirname(outFile))
+	mkdirSync(dirname(outFile), { recursive: true })
 	output = createWriteStream(outFile, { encoding: 'utf8' })
 }
 

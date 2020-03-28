@@ -6,9 +6,10 @@ const uint16 = (...buf: number[]): Uint16Array => new Uint16Array(buf)
 const uint32 = (...buf: number[]): Uint32Array => new Uint32Array(buf)
 const bufferSized = (size: number): Uint8Array => new Uint8Array(size)
 
-const Blob = /* @__INLINE__ */ window.Blob
+const Blob = window.Blob
 
-const start = (
+// eslint-disable-next-line spaced-comment
+const start = /*@__PURE__*/ (
 	length: number,
 	width: number,
 	height: number,
