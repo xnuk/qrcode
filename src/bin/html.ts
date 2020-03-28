@@ -21,9 +21,15 @@ const main = async (): Promise<void> => {
 				files[ext].push((await fs.readFile(path, 'utf8')).trim())
 			} catch {
 				console.error(`ERR: ${path} is not a valid file`)
+				process.exit(1)
 			}
 		}),
 	)
+
+	if (files.html[0] == null) {
+		console.error('ERR: no html files')
+		return process.exit(1)
+	}
 
 	const result = files.html
 		.join('\n')
