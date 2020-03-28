@@ -81,6 +81,8 @@ export type Version =
 	| 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30
 	| 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40
 
+const MAX_VERSION = 40
+
 export type Mask = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
 
 // mode constants (cf. Table 2 in JIS X 0510:2004 p. 16)
@@ -218,7 +220,7 @@ const ndatabitsPre = (ver: Version, ecclevel: ECCLEVEL): number => {
 }
 
 const ndatabitsMatrix = Array.from({ length: 4 }, (_, ecclevel) =>
-	Array.from({ length: VERSIONS.length - 1 }, (_, versionPred) =>
+	Array.from({ length: MAX_VERSION }, (_, versionPred) =>
 		ndatabitsPre((versionPred + 1) as Version, ecclevel as ECCLEVEL),
 	),
 )
@@ -436,7 +438,7 @@ const augumentbch = function (
 // some entries in the matrix may be undefined, rather than 0 or 1. this is
 // intentional (no initialization needed!), and putdata below will fill
 // the remaining ones.
-const makebasematrix = (
+const makebasematrixPre = (
 	ver: Version,
 ): { matrix: Bit[][], reserved: Bit[][], } => {
 	const aligns = VERSIONS[ver][2]
@@ -501,6 +503,17 @@ const makebasematrix = (
 
 	return { matrix, reserved }
 }
+
+const makebasematrixMatrix = Array.from(
+	{ length: MAX_VERSION },
+	(_, i) => makebasematrixPre((i + 1) as Version),
+)
+
+// eslint-disable-next-line spaced-comment
+const makebasematrix = /*@__INLINE__*/ (version: Version): {
+	matrix: Bit[][]
+	reserved: Bit[][]
+} => makebasematrixMatrix[version - 1]
 
 // fills the data portion (i.e. unmarked in reserved) of the matrix with given
 // code words. the size of code words should be no more than available bits,
@@ -696,9 +709,7 @@ const generate = (
 	let buf = encode(version, mode, data, ndatabits(version, ecclevel) >> 3)
 	buf = bufWithEccs(buf, version, ecclevel)
 
-	const result = makebasematrix(version)
-	const matrix = result.matrix
-	const reserved = result.reserved
+	const { matrix, reserved } = makebasematrix(version)
 	putdata(matrix, reserved, buf)
 
 	// eslint-disable-next-line spaced-comment
