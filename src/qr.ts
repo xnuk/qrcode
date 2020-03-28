@@ -210,12 +210,21 @@ const nfullbits = /*@__INLINE__*/ (ver: Version): number => {
 
 // returns the number of bits available for data portions (i.e. excludes ECC
 // bits but includes mode and length bits) in this version and ECC level.
-const ndatabits = (ver: Version, ecclevel: ECCLEVEL): number => {
+const ndatabitsPre = (ver: Version, ecclevel: ECCLEVEL): number => {
 	let nbits = nfullbits(ver) & ~7 // no sub-octet code words
 	const v = VERSIONS[ver]
 	nbits -= 8 * v[0][ecclevel] * v[1][ecclevel] // ecc bits
 	return nbits
 }
+
+const ndatabitsMatrix = Array.from({ length: 4 }, (_, ecclevel) =>
+	Array.from({ length: VERSIONS.length - 1 }, (_, versionPred) =>
+		ndatabitsPre((versionPred + 1) as Version, ecclevel as ECCLEVEL),
+	),
+)
+
+const ndatabits = (ver: Version, ecclevel: ECCLEVEL): number =>
+	ndatabitsMatrix[ecclevel][ver - 1]
 
 // returns the number of bits required for the length of data.
 // (cf. Table 3 in JIS X 0510:2004 p. 16)
@@ -430,7 +439,7 @@ const augumentbch = function (
 const makebasematrix = (
 	ver: Version,
 ): { matrix: Bit[][], reserved: Bit[][], } => {
-	const v = VERSIONS[ver]
+	const aligns = VERSIONS[ver][2]
 	const n = getsizebyver(ver)
 	const matrix: Bit[][] = []
 	const reserved: Bit[][] = []
@@ -467,7 +476,6 @@ const makebasematrix = (
 	}
 
 	// alignment patterns
-	const aligns = v[2]
 	const m = aligns.length
 	for (let i = 0; i < m; ++i) {
 		const minj = i === 0 || i === m - 1 ? 1 : 0
@@ -668,6 +676,15 @@ const evaluatematrix = (matrix: Bit[][]): number => {
 	return score
 }
 
+const bufWithEccs = (
+	buf: number[],
+	version: Version,
+	ecclevel: ECCLEVEL,
+): number[] => {
+	const v = VERSIONS[version]
+	return augumenteccs(buf, v[1][ecclevel], GF256_GENPOLY[v[0][ecclevel]])
+}
+
 // returns the fully encoded QR code matrix which contains given data.
 // it also chooses the best mask automatically when mask is -1.
 const generate = (
@@ -676,9 +693,8 @@ const generate = (
 	mode: MODE,
 	ecclevel: ECCLEVEL,
 ): Bit[][] => {
-	const v = VERSIONS[version]
 	let buf = encode(version, mode, data, ndatabits(version, ecclevel) >> 3)
-	buf = augumenteccs(buf, v[1][ecclevel], GF256_GENPOLY[v[0][ecclevel]])
+	buf = bufWithEccs(buf, version, ecclevel)
 
 	const result = makebasematrix(version)
 	const matrix = result.matrix
