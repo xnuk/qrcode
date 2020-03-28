@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+const production = process.env.NODE_ENV === 'production'
+
+const file = process.argv[2]
+const outFile = process.argv[3]
+
+if (!file) process.exit(1)
+
+const { mkdirSync, createWriteStream } = require('fs')
+const { dirname } = require('path')
+
+let output = process.stdout
+
+if (outFile) {
+	mkdirSync(dirname(outFile))
+	output = createWriteStream(outFile, { encoding: 'utf8' })
+}
+
+output.write(
+	require('sass').renderSync({
+		file,
+		sourceMap: false,
+		outputStyle: production ? 'compressed' : 'expanded',
+	}).css
+)
+

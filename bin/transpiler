@@ -18,7 +18,6 @@ const maybeOutput = process.argv[3]
 const output = maybeOutput
 	? createWriteStream(maybeOutput, {
 		encoding: 'utf8',
-		flag: 'wx',
 		mode: 0o755,
 	})
 	: process.stdout

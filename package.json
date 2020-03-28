@@ -4,14 +4,15 @@
 	"description": "",
 	"main": "",
 	"scripts": {
-		"build:script:rollup-config": "./bin/transpiler ./src/bin/rollup.config.ts rollup.config.js",
+		"lint:script": "eslint ./src/**.ts",
+		"build:script:rollup:config": "./bin/transpiler ./src/bin/rollup.config.ts rollup.config.js",
 		"build:script:rollup": "rollup -c",
-		"build:script": "run-s build:script:rollup-config build:script:rollup",
-		"build:style": "sass src/index.sass:dist/index.css --style compressed --no-source-map",
+		"build:script": "run-s build:script:rollup:config build:script:rollup",
+		"build:style": "./bin/sass src/index.sass dist/index.css",
 		"build:html:template:script": "./bin/transpiler ./src/bin/html.ts ./bin/html",
 		"build:html:template": "./bin/html dist/index.css dist/index.js src/index.html > dist/index.html",
 		"build:html": "run-s build:html:template:script build:html:template",
-		"build:assets": "run-p build:script build:style",
+		"build:assets": "run-p lint:script build:script build:style",
 		"build": "run-s build:assets build:html"
 	},
 	"repository": {
