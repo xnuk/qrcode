@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import typescript from '@rollup/plugin-typescript'
-import { terser } from 'rollup-plugin-terser'
+import terserPlug from 'rollup-plugin-terser'
 import type { RollupOptions, Plugin } from 'rollup'
 
 const production = process.env.NODE_ENV === 'production'
@@ -16,7 +16,7 @@ const options: RollupOptions = {
 		format: 'iife',
 		plugins: plugin([
 			production
-				&& terser({
+				&& terserPlug.terser({
 					ecma: 7,
 					warnings: true,
 					mangle: {
