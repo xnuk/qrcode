@@ -20,7 +20,8 @@ if(o>=0)for(let l=0;n>l;++l)r[t+l]^=L[(o+e[l])%255]}return r.slice(o)},B=(t,e,r,
 for(let t=e-1;t>=0;--t)n>>o+t&1&&(n^=r<<t)
 return t<<o|n},N=r.from({length:40},(t,e)=>(t=>{const e=v[t][2],r=(t=>4*t+17)(t),o=[],n=[]
 for(let t=0;r>t;++t)o.push([]),n.push([])
-const l=(t,e,r,l,s)=>{for(let c=0;r>c;++c)for(let r=0;l>r;++r)o[t+c][e+r]=s[c]>>r&1,n[t+c][e+r]=1};l(0,0,9,9,[127,65,93,93,93,65,383,0,64]),l(r-8,0,8,9,[256,127,65,93,93,93,65,127]),l(0,r-8,9,8,[254,130,186,186,186,130,254,0,0])
+const l=(t,e,r,l,s)=>{for(let c=0;r>c;++c)for(let r=0;l>r;++r)o[t+c][e+r]=s[c]>>r&1,n[t+c][e+r]=1}
+l(0,0,9,9,[127,65,93,93,93,65,383,0,64]),l(r-8,0,8,9,[256,127,65,93,93,93,65,127]),l(0,r-8,9,8,[254,130,186,186,186,130,254,0,0])
 for(let t=9;r-8>t;++t)o[6][t]=o[t][6]=1&~t,n[6][t]=n[t][6]=1
 const s=e.length
 for(let t=0;s>t;++t){const r=0===t?s-1:s
@@ -82,4 +83,5 @@ let o=1
 const n=t.length
 for(;40>=o;++o)if(n<=j(o,r,e))return()=>S(t,o,r,e)
 throw Error("data is too large")})(t,e)())(t,e)))});["keydown","keyup","change","blur","paste","compositionupdate","compositionend"].map(t=>P.addEventListener(t,Q,0))
-const V=()=>{P.value=t.location.hash.substring(1),Q(),g(()=>{P.focus(),g(()=>P.select())})};t.addEventListener("hashchange",V),g(V)})(window)</script>
+const V=()=>{P.value=t.location.hash.substring(1),Q(),g(()=>{P.focus(),g(()=>P.select())})}
+t.addEventListener("hashchange",V),g(V)})(window)</script>
