@@ -29,11 +29,14 @@ type Bit = 0 | 1
 // the number in this table (in particular, [0]) does not exactly match with
 // the numbers in the specficiation. see augumenteccs below for the reason.
 
+const thirties = [28, 30, 30, 30] as const
+const ones = [1, 1, 1, 1] as const
+
 // prettier-ignore
 const VERSIONS = [
 	null as never,
-	[[10, 7, 17, 13], [1, 1, 1, 1], []],
-	[[16, 10, 28, 22], [1, 1, 1, 1], [4, 16]],
+	[[10, 7, 17, 13], ones, []],
+	[[16, 10, 28, 22], ones, [4, 16]],
 	[[26, 15, 22, 18], [1, 1, 2, 2], [4, 20]],
 	[[18, 20, 16, 26], [2, 1, 4, 2], [4, 24]],
 	[[24, 26, 22, 18], [2, 1, 4, 4], [4, 28]],
@@ -54,24 +57,24 @@ const VERSIONS = [
 	[[26, 28, 28, 30], [16, 8, 25, 20], [4, 32, 60, 88]],
 	[[26, 28, 30, 28], [17, 8, 25, 23], [4, 26, 48, 70, 92]],
 	[[28, 28, 24, 30], [17, 9, 34, 23], [4, 24, 48, 72, 96]],
-	[[28, 30, 30, 30], [18, 9, 30, 25], [4, 28, 52, 76, 100]],
-	[[28, 30, 30, 30], [20, 10, 32, 27], [4, 26, 52, 78, 104]],
+	[thirties, [18, 9, 30, 25], [4, 28, 52, 76, 100]],
+	[thirties, [20, 10, 32, 27], [4, 26, 52, 78, 104]],
 	[[28, 26, 30, 30], [21, 12, 35, 29], [4, 30, 56, 82, 108]],
 	[[28, 28, 30, 28], [23, 12, 37, 34], [4, 28, 56, 84, 112]],
-	[[28, 30, 30, 30], [25, 12, 40, 34], [4, 32, 60, 88, 116]],
-	[[28, 30, 30, 30], [26, 13, 42, 35], [4, 24, 48, 72, 96, 120]],
-	[[28, 30, 30, 30], [28, 14, 45, 38], [4, 28, 52, 76, 100, 124]],
-	[[28, 30, 30, 30], [29, 15, 48, 40], [4, 24, 50, 76, 102, 128]],
-	[[28, 30, 30, 30], [31, 16, 51, 43], [4, 28, 54, 80, 106, 132]],
-	[[28, 30, 30, 30], [33, 17, 54, 45], [4, 32, 58, 84, 110, 136]],
-	[[28, 30, 30, 30], [35, 18, 57, 48], [4, 28, 56, 84, 112, 140]],
-	[[28, 30, 30, 30], [37, 19, 60, 51], [4, 32, 60, 88, 116, 144]],
-	[[28, 30, 30, 30], [38, 19, 63, 53], [4, 28, 52, 76, 100, 124, 148]],
-	[[28, 30, 30, 30], [40, 20, 66, 56], [4, 22, 48, 74, 100, 126, 152]],
-	[[28, 30, 30, 30], [43, 21, 70, 59], [4, 26, 52, 78, 104, 130, 156]],
-	[[28, 30, 30, 30], [45, 22, 74, 62], [4, 30, 56, 82, 108, 134, 160]],
-	[[28, 30, 30, 30], [47, 24, 77, 65], [4, 24, 52, 80, 108, 136, 164]],
-	[[28, 30, 30, 30], [49, 25, 81, 68], [4, 28, 56, 84, 112, 140, 168]],
+	[thirties, [25, 12, 40, 34], [4, 32, 60, 88, 116]],
+	[thirties, [26, 13, 42, 35], [4, 24, 48, 72, 96, 120]],
+	[thirties, [28, 14, 45, 38], [4, 28, 52, 76, 100, 124]],
+	[thirties, [29, 15, 48, 40], [4, 24, 50, 76, 102, 128]],
+	[thirties, [31, 16, 51, 43], [4, 28, 54, 80, 106, 132]],
+	[thirties, [33, 17, 54, 45], [4, 32, 58, 84, 110, 136]],
+	[thirties, [35, 18, 57, 48], [4, 28, 56, 84, 112, 140]],
+	[thirties, [37, 19, 60, 51], [4, 32, 60, 88, 116, 144]],
+	[thirties, [38, 19, 63, 53], [4, 28, 52, 76, 100, 124, 148]],
+	[thirties, [40, 20, 66, 56], [4, 22, 48, 74, 100, 126, 152]],
+	[thirties, [43, 21, 70, 59], [4, 26, 52, 78, 104, 130, 156]],
+	[thirties, [45, 22, 74, 62], [4, 30, 56, 82, 108, 134, 160]],
+	[thirties, [47, 24, 77, 65], [4, 24, 52, 80, 108, 136, 164]],
+	[thirties, [49, 25, 81, 68], [4, 28, 56, 84, 112, 140, 168]],
 ] as const
 
 // prettier-ignore
@@ -138,10 +141,27 @@ for (let i = 0; i < 30; ++i) {
 	GF256_GENPOLY.push(poly)
 }
 
+const A = 65 // 'A'.charCodeAt()
+const Z = 90 // 'Z'.charCodeAt()
+const ZERO = 0x30 // '0'.charCodeAt()
+const NINE = 0x39 // '9'.charCodeAt()
+const DIGIT_LEN = NINE - ZERO + 1
+const ALPHA_LEN = Z - A + 1
+
 // alphanumeric character mapping (cf. Table 5 in JIS X 0510:2004 p. 19)
-const ALPHANUMERIC_MAP = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:'
-const ALPHANUMERIC_MAP_INDEX = (x: string): number =>
-	ALPHANUMERIC_MAP.indexOf(x)
+// const ALPHANUMERIC_MAP = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:'
+const ALPHANUMERIC_MAP_INDEX = (x: string): number => {
+	const c = x.charCodeAt(0)
+	if (c <= NINE && c >= ZERO) {
+		return c - ZERO
+	}
+
+	if (c >= A && c <= Z) {
+		return c - (A - DIGIT_LEN)
+	}
+
+	return DIGIT_LEN + ALPHA_LEN + ' $%*+-./:'.indexOf(x)
+}
 
 // mask functions in terms of row # and column #
 // (cf. Table 20 in JIS X 0510:2004 p. 42)
@@ -157,16 +177,13 @@ const MASKFUNCS: ((i: number, j: number) => boolean)[] = [
 ]
 
 // returns true when the version information has to be embeded.
-// eslint-disable-next-line spaced-comment
-const needsverinfo = /*@__INLINE__*/ (ver: Version): boolean => ver > 6
+const needsverinfo = (ver: Version): boolean => ver > 6
 
 // returns the size of entire QR code for given version.
-// eslint-disable-next-line spaced-comment
-const getsizebyver = /*@__INLINE__*/ (ver: Version): number => 4 * ver + 17
+const getsizebyver = (ver: Version): number => 4 * ver + 17
 
 // returns the number of bits available for code words in this version.
-// eslint-disable-next-line spaced-comment
-const nfullbits = /*@__INLINE__*/ (ver: Version): number => {
+const nfullbits = (ver: Version): number => {
 	/*
 	 * |<--------------- n --------------->|
 	 * |        |<----- n-17 ---->|        |
@@ -202,7 +219,8 @@ const nfullbits = /*@__INLINE__*/ (ver: Version): number => {
 	 */
 	const v = VERSIONS[ver]
 	let nbits = 16 * ver * ver + 128 * ver + 64 // finder, timing and format info.
-	if (needsverinfo(ver)) nbits -= 36 // version information
+	// eslint-disable-next-line spaced-comment
+	if (/*@__INLINE__*/ needsverinfo(ver)) nbits -= 36 // version information
 	if (v[2].length) {
 		// alignment patterns
 		nbits -= 25 * v[2].length * v[2].length - 10 * v[2].length - 55
@@ -213,7 +231,8 @@ const nfullbits = /*@__INLINE__*/ (ver: Version): number => {
 // returns the number of bits available for data portions (i.e. excludes ECC
 // bits but includes mode and length bits) in this version and ECC level.
 const ndatabitsPre = (ver: Version, ecclevel: ECCLEVEL): number => {
-	let nbits = nfullbits(ver) & ~7 // no sub-octet code words
+	// eslint-disable-next-line spaced-comment
+	let nbits = /*@__INLINE__*/ nfullbits(ver) & ~7 // no sub-octet code words
 	const v = VERSIONS[ver]
 	nbits -= 8 * v[0][ecclevel] * v[1][ecclevel] // ecc bits
 	return nbits
@@ -242,8 +261,7 @@ const ndatalenbits = (ver: Version, mode: MODE): number => {
 }
 
 // returns the maximum length of data possible in given configuration.
-// eslint-disable-next-line spaced-comment
-const getmaxdatalen = /*@__PURE__*/ (
+const getmaxdatalen = (
 	ver: Version,
 	mode: MODE,
 	ecclevel: ECCLEVEL,
@@ -265,8 +283,7 @@ const getmaxdatalen = /*@__PURE__*/ (
 // returns the code words (sans ECC bits) for given data and configurations.
 // requires data to be preprocessed by validatedata. no length check is
 // performed, and everything has to be checked before calling this function.
-// eslint-disable-next-line spaced-comment
-const encode = /*@__INLINE__*/ (
+const encode = (
 	ver: Version,
 	mode: MODE,
 	data: string | Uint8Array,
@@ -292,35 +309,35 @@ const encode = /*@__INLINE__*/ (
 	pack(mode, 4)
 	pack(datalen, nlenbits)
 
-	let i = 0
-	switch (mode) {
-	case MODE_NUMERIC:
-		if (typeof data !== 'string') throw new Error('')
-		for (i = 2; i < datalen; i += 3) {
-			pack(parseInt(data.substring(i - 2, i + 1), 10), 10)
-		}
-		pack(parseInt(data.substring(i - 2), 10), [0, 4, 7][datalen % 3])
-		break
-
-	case MODE_ALPHANUMERIC:
-		if (typeof data !== 'string') throw new Error('')
-		for (let i = 1; i < datalen; i += 2) {
-			pack(
-				ALPHANUMERIC_MAP_INDEX(data[i - 1]) * 45
-					+ ALPHANUMERIC_MAP_INDEX(data[i]),
-				11,
-			)
-		}
-		if (datalen % 2 === 1) {
-			pack(ALPHANUMERIC_MAP_INDEX(data[i - 1]), 6)
-		}
-		break
-
-	case MODE_OCTET:
+	if (mode === MODE_OCTET) {
 		for (let i = 0; i < datalen; ++i) {
 			pack((data as Uint8Array)[i], 8)
 		}
-		break
+	} else {
+		const stringData = data as string
+
+		if (mode === MODE_ALPHANUMERIC) {
+			for (let i = 1; i < datalen; i += 2) {
+				pack(
+					ALPHANUMERIC_MAP_INDEX(stringData[i - 1]) * 45
+					+ ALPHANUMERIC_MAP_INDEX(stringData[i]),
+					11,
+				)
+			}
+
+			if (datalen % 2 === 1) {
+				pack(ALPHANUMERIC_MAP_INDEX(stringData[datalen - 1]), 6)
+			}
+		} else {
+			for (let i = 2; i < datalen; i += 3) {
+				pack(+stringData.substring(i - 2, i + 1), 10)
+			}
+
+			const mod = datalen % 3
+			if (mod > 0) {
+				pack(+stringData.substring(datalen - mod), mod * 3 + 1)
+			}
+		}
 	}
 
 	// final bits. it is possible that adding terminator causes the buffer
@@ -442,7 +459,8 @@ const makebasematrixPre = (
 	ver: Version,
 ): { matrix: Bit[][], reserved: Bit[][], } => {
 	const aligns = VERSIONS[ver][2]
-	const n = getsizebyver(ver)
+	// eslint-disable-next-line spaced-comment
+	const n = /*@__INLINE__*/ getsizebyver(ver)
 	const matrix: Bit[][] = []
 	const reserved: Bit[][] = []
 	for (let i = 0; i < n; ++i) {
@@ -488,7 +506,8 @@ const makebasematrixPre = (
 	}
 
 	// version information
-	if (needsverinfo(ver)) {
+	// eslint-disable-next-line spaced-comment
+	if (/*@__INLINE__*/ needsverinfo(ver)) {
 		const code = augumentbch(ver, 6, 0x1f25, 12)
 		let k = 0
 		for (let i = 0; i < 6; ++i) {
@@ -506,11 +525,11 @@ const makebasematrixPre = (
 
 const makebasematrixMatrix = Array.from(
 	{ length: MAX_VERSION },
-	(_, i) => makebasematrixPre((i + 1) as Version),
+	// eslint-disable-next-line spaced-comment
+	(_, i) => /*@__INLINE__*/ makebasematrixPre((i + 1) as Version),
 )
 
-// eslint-disable-next-line spaced-comment
-const makebasematrix = /*@__INLINE__*/ (version: Version): {
+const makebasematrix = (version: Version): {
 	matrix: Bit[][]
 	reserved: Bit[][]
 } => makebasematrixMatrix[version - 1]
@@ -706,14 +725,18 @@ const generate = (
 	mode: MODE,
 	ecclevel: ECCLEVEL,
 ): Bit[][] => {
-	let buf = encode(version, mode, data, ndatabits(version, ecclevel) >> 3)
-	buf = bufWithEccs(buf, version, ecclevel)
-
-	const { matrix, reserved } = makebasematrix(version)
-	putdata(matrix, reserved, buf)
+	// eslint-disable-next-line spaced-comment
+	let buf = /*@__INLINE__*/ encode(
+		version, mode, data, ndatabits(version, ecclevel) >> 3,
+	)
+	// eslint-disable-next-line spaced-comment
+	buf = /*@__INLINE__*/ bufWithEccs(buf, version, ecclevel)
 
 	// eslint-disable-next-line spaced-comment
-	const scoreMask = /*@__PURE__*/ (mask: Mask): number => {
+	const { matrix, reserved } = /*@__INLINE__*/ makebasematrix(version)
+	putdata(matrix, reserved, buf)
+
+	const scoreMask = (mask: Mask): number => {
 		maskdata(matrix, reserved, mask)
 
 		putformatinfo(matrix, ecclevel, mask)
@@ -740,15 +763,14 @@ const generate = (
 	return matrix
 }
 
-// eslint-disable-next-line spaced-comment
-const guessVersion = /*@__INLINE__*/ (
+const guessVersion = (
 	data: string | Uint8Array,
 	ecclevel: ECCLEVEL,
 ): (() => Bit[][]) => {
 	let mode: MODE = MODE_OCTET
 
 	if (typeof data === 'string') {
-		if (/^\d*$/.test(data)) {
+		if (/^[0-9]*$/.test(data)) {
 			mode = MODE_NUMERIC
 		} else if (/^[A-Z0-9 $%*+\-./:]*$/.test(data)) {
 			mode = MODE_ALPHANUMERIC
@@ -760,7 +782,10 @@ const guessVersion = /*@__INLINE__*/ (
 	let version: Version = 1
 	const len = data.length
 	for (; version <= 40; ++version) {
-		if (len <= getmaxdatalen(version as Version, mode, ecclevel)) {
+		// eslint-disable-next-line spaced-comment
+		if (len <= /*@__INLINE__*/ getmaxdatalen(
+			version as Version, mode, ecclevel,
+		)) {
 			return (): Bit[][] =>
 				generate(data, version as Version, mode, ecclevel)
 		}
@@ -769,10 +794,10 @@ const guessVersion = /*@__INLINE__*/ (
 	throw new Error('data is too large')
 }
 
-// eslint-disable-next-line spaced-comment
-export const generateFromText = /*@__INLINE__*/ (
+export const generateFromText = (
 	data: string | Uint8Array,
 	ecclevel: ECCLEVEL = ECCLEVEL_L,
 ): Bit[][] => {
-	return guessVersion(data, ecclevel)()
+// eslint-disable-next-line spaced-comment
+	return /*@__INLINE__*/ guessVersion(data, ecclevel)()
 }

@@ -1,6 +1,5 @@
+/* global requestAnimationFrame */
 import { qrcode } from './qrcode'
-
-;[Object, Array, String, Number].map(v => Object.freeze(v))
 
 const element = <K extends keyof HTMLElementTagNameMap>(
 	name: K,
@@ -9,9 +8,9 @@ const element = <K extends keyof HTMLElementTagNameMap>(
 const img = element('img')
 const input = element('input')
 
-const raf = window.requestAnimationFrame
-
-const update = (): unknown => raf(() => (img.src = qrcode(input.value || '')))
+const update = (): unknown => requestAnimationFrame(() => {
+	img.src = qrcode(input.value || '')
+})
 
 ;[
 	'keydown',
@@ -26,12 +25,12 @@ const update = (): unknown => raf(() => (img.src = qrcode(input.value || '')))
 const hashchange = (): void => {
 	input.value = window.location.hash.substring(1)
 	update()
-	raf(() => {
+	requestAnimationFrame(() => {
 		input.focus()
-		raf(() => input.select())
+		requestAnimationFrame(() => input.select())
 	})
 }
 
 window.addEventListener('hashchange', hashchange)
 
-raf(hashchange)
+requestAnimationFrame(hashchange)
