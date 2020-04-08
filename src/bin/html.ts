@@ -46,7 +46,7 @@ const main = async (): Promise<void> => {
 						+ file.js.replace(
 							/;($|(?:const|for|return|var|let|break|case|else|if|throw|switch)\b)/g,
 							'\n$1',
-						).trim()
+						).replace(/\};(\w)/g, '}\n$1').trim()
 						+ close
 					: '',
 		)
