@@ -66,5 +66,5 @@ jobs:
         git config user.email action@github.com
         git config user.name 'Ship it parrot'
         git add --all
-        git commit -m '[ci skip] ${{ github.sha }}' || true
+        git commit -m '[deployed] commit ${{ github.sha }}' || true
         git push origin HEAD
