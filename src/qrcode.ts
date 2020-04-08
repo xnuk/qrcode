@@ -3,8 +3,7 @@ import { render } from './qr-bmp'
 
 let latest: { key: string, url: string, } | null = null
 
-// eslint-disable-next-line spaced-comment
-const blobURL = /*@__INLINE__*/ (key: string, blob: Blob): string => {
+const blobURL = (key: string, blob: Blob): string => {
 	if (latest) {
 		if (latest.key === key) return latest.url
 
@@ -16,8 +15,11 @@ const blobURL = /*@__INLINE__*/ (key: string, blob: Blob): string => {
 	return url
 }
 
-// eslint-disable-next-line spaced-comment
-export const qrcode = /*@__INLINE__*/ (
+export const qrcode = (
 	text: string,
 	ecclevel?: ECCLEVEL,
-): string => blobURL(text, render(generateFromText(text, ecclevel)))
+): string =>
+	// eslint-disable-next-line spaced-comment
+	/*@__INLINE__*/ blobURL(text, render(/*@__INLINE__*/ generateFromText(
+		text, ecclevel,
+	)))
