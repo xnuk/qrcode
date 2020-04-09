@@ -40,7 +40,7 @@
 		"eslint-plugin-promise": "^4.2.1",
 		"eslint-plugin-standard": "^4.0.1",
 		"npm-run-all": "^4.1.5",
-		"rollup": "^2.3.4",
+		"rollup": "^2.3.5",
 		"sass": "^1.26.3",
 		"terser": "^4.6.11",
 		"ts-node": "^8.8.2",
