@@ -28,7 +28,7 @@
 	"author": "Xnuk Shuman",
 	"license": "BSD-3-Clause",
 	"devDependencies": {
-		"@rollup/plugin-typescript": "^4.0.0",
+		"@rollup/plugin-typescript": "^4.1.0",
 		"@types/node": "^13.11.1",
 		"@typescript-eslint/eslint-plugin": "^2.27.0",
 		"@typescript-eslint/parser": "^2.27.0",
