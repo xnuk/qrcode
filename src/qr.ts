@@ -1,4 +1,5 @@
 import { abs, TextEncoder } from './window'
+
 /* qr.js -- QR code generator in Javascript (revision 2011-01-19)
  * Written by Kang Seonghoon <public+qrjs@mearie.org>.
  *
@@ -321,7 +322,7 @@ const encode = (
 			for (let i = 1; i < datalen; i += 2) {
 				pack(
 					ALPHANUMERIC_MAP_INDEX(stringData[i - 1]) * 45
-					+ ALPHANUMERIC_MAP_INDEX(stringData[i]),
+						+ ALPHANUMERIC_MAP_INDEX(stringData[i]),
 					11,
 				)
 			}
@@ -530,7 +531,9 @@ const makebasematrixMatrix = Array.from(
 	(_, i) => /*@__INLINE__*/ makebasematrixPre((i + 1) as Version),
 )
 
-const makebasematrix = (version: Version): {
+const makebasematrix = (
+	version: Version,
+): {
 	matrix: Bit[][]
 	reserved: Bit[][]
 } => makebasematrixMatrix[version - 1]
@@ -728,7 +731,10 @@ const generate = (
 ): Bit[][] => {
 	// eslint-disable-next-line spaced-comment
 	let buf = /*@__INLINE__*/ encode(
-		version, mode, data, ndatabits(version, ecclevel) >> 3,
+		version,
+		mode,
+		data,
+		ndatabits(version, ecclevel) >> 3,
 	)
 	// eslint-disable-next-line spaced-comment
 	buf = /*@__INLINE__*/ bufWithEccs(buf, version, ecclevel)
@@ -783,6 +789,7 @@ const guessVersion = (
 	let version: Version = 1
 	const len = data.length
 	for (; version <= 40; ++version) {
+		// prettier-ignore
 		// eslint-disable-next-line spaced-comment
 		if (len <= /*@__INLINE__*/ getmaxdatalen(
 			version as Version, mode, ecclevel,
@@ -799,6 +806,6 @@ export const generateFromText = (
 	data: string | Uint8Array,
 	ecclevel: ECCLEVEL = ECCLEVEL_L,
 ): Bit[][] => {
-// eslint-disable-next-line spaced-comment
+	// eslint-disable-next-line spaced-comment
 	return /*@__INLINE__*/ guessVersion(data, ecclevel)()
 }
