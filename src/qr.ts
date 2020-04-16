@@ -1,3 +1,4 @@
+import { abs, TextEncoder } from './window'
 /* qr.js -- QR code generator in Javascript (revision 2011-01-19)
  * Written by Kang Seonghoon <public+qrjs@mearie.org>.
  *
@@ -704,7 +705,7 @@ const evaluatematrix = (matrix: Bit[][]): number => {
 		}
 	}
 
-	score += PENALTY_DENSITY * ((Math.abs(nblacks / n / n - 0.5) / 0.05) | 0)
+	score += PENALTY_DENSITY * ((abs(nblacks / n / n - 0.5) / 0.05) | 0)
 	return score
 }
 

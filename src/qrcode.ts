@@ -1,3 +1,4 @@
+import { URL } from './window'
 import { generateFromText, ECCLEVEL } from './qr'
 import { render } from './qr-bmp'
 

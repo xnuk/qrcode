@@ -1,9 +1,5 @@
-/* global requestAnimationFrame */
+import { requestAnimationFrame, element, WINDOW } from './window'
 import { qrcode } from './qrcode'
-
-const element = <K extends keyof HTMLElementTagNameMap>(
-	name: K,
-): HTMLElementTagNameMap[K] => document.getElementsByTagName(name)[0]
 
 const img = element('img')
 const input = element('input')
@@ -23,7 +19,7 @@ const update = (): unknown => requestAnimationFrame(() => {
 ].map(key => input.addEventListener(key, update, false))
 
 const hashchange = (): void => {
-	input.value = window.location.hash.substring(1)
+	input.value = WINDOW.location.hash.substring(1)
 	update()
 	requestAnimationFrame(() => {
 		input.focus()
@@ -31,6 +27,6 @@ const hashchange = (): void => {
 	})
 }
 
-window.addEventListener('hashchange', hashchange)
+WINDOW.addEventListener('hashchange', hashchange)
 
 requestAnimationFrame(hashchange)
