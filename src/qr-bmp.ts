@@ -1,4 +1,4 @@
-import { Blob, ceil } from './window'
+import { Blob, ceil, Uint8Array, Uint16Array, Uint32Array } from './window'
 const startBufferLength = 0x20
 
 const uint8 = (...buf: number[]): Uint8Array => new Uint8Array(buf)
