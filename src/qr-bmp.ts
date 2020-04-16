@@ -1,4 +1,4 @@
-/* global Blob */
+import { Blob, ceil } from './window'
 const startBufferLength = 0x20
 
 const uint8 = (...buf: number[]): Uint8Array => new Uint8Array(buf)
@@ -44,7 +44,7 @@ type Bit = 0 | 1
 
 const bitsToBytes = (bits: Bit[]): Uint8Array => {
 	const len = bits.length
-	const buf = bufferSized(Math.ceil(len / 32) * 4)
+	const buf = bufferSized(ceil(len / 32) * 4)
 
 	for (let i = 0; i * 8 < len; ++i) {
 		// bits to octets
@@ -65,7 +65,7 @@ export const render = (data: Bit[][]): Blob => {
 	// data with given color bits (1 bit),
 	// and add some paddings to make the row length into multiple of 4 bytes
 	// ceil(bytes / 4) * 4 where bytes = width * color_bits / 8
-	const bitmapRowLength = Math.ceil(width / 32) * 4
+	const bitmapRowLength = ceil(width / 32) * 4
 	const bitmapLength = bitmapRowLength * height
 
 	// https://stackoverflow.com/questions/8346115/why-are-bmps-stored-upside-down
