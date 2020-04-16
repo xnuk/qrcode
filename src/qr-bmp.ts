@@ -73,6 +73,9 @@ export const render = (data: Bit[][]): Blob => {
 
 	// eslint-disable-next-line spaced-comment
 	return /*@__INLINE__*/ start(
-		bitmapLength + startBufferLength, width, height, body,
+		bitmapLength + startBufferLength,
+		width,
+		height,
+		body,
 	)
 }

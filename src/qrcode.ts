@@ -16,11 +16,12 @@ const blobURL = (key: string, blob: Blob): string => {
 	return url
 }
 
-export const qrcode = (
-	text: string,
-	ecclevel?: ECCLEVEL,
-): string =>
+export const qrcode = (text: string, ecclevel?: ECCLEVEL): string =>
 	// eslint-disable-next-line spaced-comment
-	/*@__INLINE__*/ blobURL(text, render(/*@__INLINE__*/ generateFromText(
-		text, ecclevel,
-	)))
+	/*@__INLINE__*/ blobURL(
+		text,
+		render(
+			// eslint-disable-next-line spaced-comment
+			/*@__INLINE__*/ generateFromText(text, ecclevel),
+		),
+	)
