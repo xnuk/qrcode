@@ -36,7 +36,7 @@
 		"eslint-plugin-standard": "^4.0.1",
 		"npm-run-all": "^4.1.5",
 		"prettier-eslint-cli": "^5.0.0",
-		"rollup": "^2.6.1",
+		"rollup": "^2.7.0",
 		"sass": "^1.26.3",
 		"terser": "^4.6.11",
 		"tslib": "^1.11.1",
