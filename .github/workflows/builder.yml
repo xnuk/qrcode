@@ -3,42 +3,73 @@ name: Bulldozer
 on:
   push:
     branches-ignore:
-      - gh-pages
+    - gh-pages
+    paths-ignore:
+    - pnpm-lock.yaml
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version:
-          - 13.x
+    env:
+      NPM_CONFIG_PREFIX: /home/runner/.npm/global-packages
 
     steps:
-    - run: echo ${{ github.ref }}
     - uses: actions/checkout@v2
-
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: npm install
-      run: npm ci
-      env:
-        CI: true
+    - uses: actions/cache@v1
+      with:
+        path: ~/.pnpm-store
+        key: ${{ runner.os }}-pnpm-store-v1
 
-    - name: npm build
-      run: npm run build
+    - uses: actions/cache@v1
+      id: pnpm-bin
+      with:
+        path: ${{ env.NPM_CONFIG_PREFIX }}
+        key: ${{ runner.os }}-pnpm-bin-v1
+
+    - uses: actions/cache@v1
+      with:
+        path: ./pnpm
+        key: pnpm-lock-${{ hashFiles('package-lock.json') }}-v1.5
+
+
+    - name: Installing pnpm
+      run: npx pnpm add -g pnpm
+      if: steps.pnpm-bin.outputs.cache-hit != 'true'
+
+    - name: pnpm import
+      run: |
+        export PATH=$NPM_CONFIG_PREFIX/bin:$PATH
+        cp pnpm/pnpm-lock.yaml . || pnpm import
+        mkdir pnpm && cp pnpm-lock.yaml pnpm || true
+
+    - name: update pnpm lockfile
+      run: |
+        git config user.email action@github.com
+        git config user.name 'pnpm it parrot'
+        git add pnpm-lock.yaml
+        git commit -m 'Update pnpm lockfile by ${{ github.sha }}' || true
+        git push origin HEAD
+      if: steps.pnpm-lock.outputs.cache-hit != 'true' && github.ref != 'refs/heads/master'
+
+    - name: pnpm install
+      run: >
+        export PATH=$NPM_CONFIG_PREFIX/bin:$PATH &&
+        pnpm install
+
+    - name: build
+      run: >
+        export PATH=$NPM_CONFIG_PREFIX/bin:$PATH &&
+        pnpm run build
       env:
-        CI: true
         NODE_ENV: production
 
     - uses: actions/upload-artifact@v1
       with:
         name: index.min.html
         path: dist/index.html
-
 
   deploy:
     needs:
