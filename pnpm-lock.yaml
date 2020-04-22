@@ -1,5 +1,5 @@
 devDependencies:
-  '@rollup/plugin-typescript': 4.1.1_391bcb9f949eaeb79853e5f7fbf7c51b
+  '@rollup/plugin-typescript': 4.1.1_80e7a75fa4ba1054c6ebc620d2be573e
   '@types/node': 13.13.1
   '@typescript-eslint/eslint-plugin': 2.29.0_68aa0cf1893d5414e11aa7fe89753d25
   '@typescript-eslint/parser': 2.29.0_eslint@6.8.0+typescript@3.8.3
@@ -11,7 +11,7 @@ devDependencies:
   eslint-plugin-standard: 4.0.1_eslint@6.8.0
   npm-run-all: 4.1.5
   prettier-eslint-cli: 5.0.0
-  rollup: 2.7.0
+  rollup: 2.7.1
   sass: 1.26.3
   terser: 4.6.11
   tslib: 1.11.1
@@ -36,11 +36,11 @@ packages:
     dev: true
     resolution:
       integrity: sha512-lJZPilxX7Op3Nv/2cvFdnlepPXDxi29wxteT57Q965oc5R9v86ztx0jfxVrTcBk8C2kcPkkDa2Z4T3ZsPPVWsQ==
-  /@rollup/plugin-typescript/4.1.1_391bcb9f949eaeb79853e5f7fbf7c51b:
+  /@rollup/plugin-typescript/4.1.1_80e7a75fa4ba1054c6ebc620d2be573e:
     dependencies:
-      '@rollup/pluginutils': 3.0.9_rollup@2.7.0
+      '@rollup/pluginutils': 3.0.9_rollup@2.7.1
       resolve: 1.16.0
-      rollup: 2.7.0
+      rollup: 2.7.1
       tslib: 1.11.1
       typescript: 3.8.3
     dev: true
@@ -52,12 +52,12 @@ packages:
       typescript: '>=2.1.0'
     resolution:
       integrity: sha512-KYZCn1Iw9hZWkeEPqPs5YjlmvSjR7UdezVca8z0e8rm/29wU24UD9Y4IZHhnc9tm749hzsgBTiOUxA85gfShEQ==
-  /@rollup/pluginutils/3.0.9_rollup@2.7.0:
+  /@rollup/pluginutils/3.0.9_rollup@2.7.1:
     dependencies:
       '@types/estree': 0.0.39
       estree-walker: 1.0.1
       micromatch: 4.0.2
-      rollup: 2.7.0
+      rollup: 2.7.1
     dev: true
     engines:
       node: '>= 8.0.0'
@@ -2004,7 +2004,7 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==
-  /rollup/2.7.0:
+  /rollup/2.7.1:
     dev: true
     engines:
       node: '>=10.0.0'
@@ -2012,7 +2012,7 @@ packages:
     optionalDependencies:
       fsevents: 2.1.2
     resolution:
-      integrity: sha512-M7XUP+vIcUeuRDMQR+IX/gGbtVsdf4lOdh1/Z4C5/B7w9kobg9vY/WYLVJo9GP6W+0+u+6DDELtTpgfqgDxxLQ==
+      integrity: sha512-c1FCjY8HK1nAq0bTZHaR72ZknpP7p0EjxbcVc6BcmtOosurK//P5jtwxX+f/4fgtbrjczqf0uvR+EdtxpriE8g==
   /run-async/2.4.0:
     dependencies:
       is-promise: 2.1.0
@@ -2475,7 +2475,7 @@ specifiers:
   eslint-plugin-standard: ^4.0.1
   npm-run-all: ^4.1.5
   prettier-eslint-cli: ^5.0.0
-  rollup: ^2.7.0
+  rollup: ^2.7.1
   sass: ^1.26.3
   terser: ^4.6.11
   tslib: ^1.11.1
