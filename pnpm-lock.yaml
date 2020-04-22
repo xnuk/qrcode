@@ -1,6 +1,6 @@
 devDependencies:
   '@rollup/plugin-typescript': 4.1.1_391bcb9f949eaeb79853e5f7fbf7c51b
-  '@types/node': 13.13.1
+  '@types/node': 13.13.2
   '@typescript-eslint/eslint-plugin': 2.29.0_68aa0cf1893d5414e11aa7fe89753d25
   '@typescript-eslint/parser': 2.29.0_eslint@6.8.0+typescript@3.8.3
   eslint: 6.8.0
@@ -81,10 +81,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-8+KAKzEvSUdeo+kmqnKrqgeE+LcA0tjYWFY7RPProVYwnqDjukzO+3b6dLD56rYX5TdWejnEOLJYOIeh4CXKuA==
-  /@types/node/13.13.1:
+  /@types/node/13.13.2:
     dev: true
     resolution:
-      integrity: sha512-uysqysLJ+As9jqI5yqjwP3QJrhOcUwBjHUlUxPxjbplwKoILvXVsmYWEhfmAQlrPfbRZmhJB007o4L9sKqtHqQ==
+      integrity: sha512-LB2R1Oyhpg8gu4SON/mfforE525+Hi/M1ineICEDftqNVTyFg1aRIeGuTvXAoWHc4nbrFncWtJgMmoyRvuGh7A==
   /@typescript-eslint/eslint-plugin/2.29.0_68aa0cf1893d5414e11aa7fe89753d25:
     dependencies:
       '@typescript-eslint/experimental-utils': 2.29.0_eslint@6.8.0+typescript@3.8.3
@@ -2464,7 +2464,7 @@ packages:
       integrity: sha512-AX3Zw5iPruN5ie6xGRIDgqkT+ZhnRlZMLMHAs8tg7nRruy2Nb+i5o9bwghAogtM08q1dpr2LVoS8KSTMYpWXUw==
 specifiers:
   '@rollup/plugin-typescript': ^4.1.1
-  '@types/node': ^13.13.1
+  '@types/node': ^13.13.2
   '@typescript-eslint/eslint-plugin': ^2.29.0
   '@typescript-eslint/parser': ^2.29.0
   eslint: ^6.8.0
