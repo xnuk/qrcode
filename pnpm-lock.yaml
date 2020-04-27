@@ -1,8 +1,8 @@
 devDependencies:
   '@rollup/plugin-typescript': 4.1.1_d81343762706e4d791b6dc5127c49281
   '@types/node': 13.13.3
-  '@typescript-eslint/eslint-plugin': 2.29.0_68aa0cf1893d5414e11aa7fe89753d25
-  '@typescript-eslint/parser': 2.29.0_eslint@6.8.0+typescript@3.8.3
+  '@typescript-eslint/eslint-plugin': 2.29.0_696401c5c7047c2332f703e0635826dc
+  '@typescript-eslint/parser': 2.30.0_eslint@6.8.0+typescript@3.8.3
   eslint: 6.8.0
   eslint-config-standard: 14.1.1_f330a586160a35a0c1e8c97fddc2f91c
   eslint-plugin-import: 2.20.2_eslint@6.8.0
@@ -85,10 +85,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-FiVARmwSn2s0nXKJM9V7jWtGiSeUc58dxIRIhLPrPZTPRUEoHMK7BDEo0XWxQ9vNflxoUQlGDBn9/gLxORzLKQ==
-  /@typescript-eslint/eslint-plugin/2.29.0_68aa0cf1893d5414e11aa7fe89753d25:
+  /@typescript-eslint/eslint-plugin/2.29.0_696401c5c7047c2332f703e0635826dc:
     dependencies:
       '@typescript-eslint/experimental-utils': 2.29.0_eslint@6.8.0+typescript@3.8.3
-      '@typescript-eslint/parser': 2.29.0_eslint@6.8.0+typescript@3.8.3
+      '@typescript-eslint/parser': 2.30.0_eslint@6.8.0+typescript@3.8.3
       eslint: 6.8.0
       functional-red-black-tree: 1.0.1
       regexpp: 3.1.0
@@ -134,6 +134,21 @@ packages:
       typescript: '*'
     resolution:
       integrity: sha512-H/6VJr6eWYstyqjWXBP2Nn1hQJyvJoFdDtsHxGiD+lEP7piGnGpb/ZQd+z1ZSB1F7dN+WsxUDh8+S4LwI+f3jw==
+  /@typescript-eslint/experimental-utils/2.30.0_eslint@6.8.0+typescript@3.8.3:
+    dependencies:
+      '@types/json-schema': 7.0.4
+      '@typescript-eslint/typescript-estree': 2.30.0_typescript@3.8.3
+      eslint: 6.8.0
+      eslint-scope: 5.0.0
+      eslint-utils: 2.0.0
+    dev: true
+    engines:
+      node: ^8.10.0 || ^10.13.0 || >=11.10.1
+    peerDependencies:
+      eslint: '*'
+      typescript: '*'
+    resolution:
+      integrity: sha512-L3/tS9t+hAHksy8xuorhOzhdefN0ERPDWmR9CclsIGOUqGKy6tqc/P+SoXeJRye5gazkuPO0cK9MQRnolykzkA==
   /@typescript-eslint/parser/1.13.0_eslint@5.16.0:
     dependencies:
       '@types/eslint-visitor-keys': 1.0.0
@@ -148,11 +163,11 @@ packages:
       eslint: ^5.0.0
     resolution:
       integrity: sha512-ITMBs52PCPgLb2nGPoeT4iU3HdQZHcPaZVw+7CsFagRJHUhyeTgorEwHXhFf3e7Evzi8oujKNpHc8TONth8AdQ==
-  /@typescript-eslint/parser/2.29.0_eslint@6.8.0+typescript@3.8.3:
+  /@typescript-eslint/parser/2.30.0_eslint@6.8.0+typescript@3.8.3:
     dependencies:
       '@types/eslint-visitor-keys': 1.0.0
-      '@typescript-eslint/experimental-utils': 2.29.0_eslint@6.8.0+typescript@3.8.3
-      '@typescript-eslint/typescript-estree': 2.29.0_typescript@3.8.3
+      '@typescript-eslint/experimental-utils': 2.30.0_eslint@6.8.0+typescript@3.8.3
+      '@typescript-eslint/typescript-estree': 2.30.0_typescript@3.8.3
       eslint: 6.8.0
       eslint-visitor-keys: 1.1.0
       typescript: 3.8.3
@@ -166,7 +181,7 @@ packages:
       typescript:
         optional: true
     resolution:
-      integrity: sha512-H78M+jcu5Tf6m/5N8iiFblUUv+HJDguMSdFfzwa6vSg9lKR8Mk9BsgeSjO8l2EshKnJKcbv0e8IDDOvSNjl0EA==
+      integrity: sha512-9kDOxzp0K85UnpmPJqUzdWaCNorYYgk1yZmf4IKzpeTlSAclnFsrLjfwD9mQExctLoLoGAUXq1co+fbr+3HeFw==
   /@typescript-eslint/typescript-estree/1.13.0:
     dependencies:
       lodash.unescape: 4.0.1
@@ -196,6 +211,26 @@ packages:
         optional: true
     resolution:
       integrity: sha512-3YGbtnWy4az16Egy5Fj5CckkVlpIh0MADtAQza+jiMADRSKkjdpzZp/5WuvwK/Qib3Z0HtzrDFeWanS99dNhnA==
+  /@typescript-eslint/typescript-estree/2.30.0_typescript@3.8.3:
+    dependencies:
+      debug: 4.1.1
+      eslint-visitor-keys: 1.1.0
+      glob: 7.1.6
+      is-glob: 4.0.1
+      lodash: 4.17.15
+      semver: 6.3.0
+      tsutils: 3.17.1_typescript@3.8.3
+      typescript: 3.8.3
+    dev: true
+    engines:
+      node: ^8.10.0 || ^10.13.0 || >=11.10.1
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    resolution:
+      integrity: sha512-nI5WOechrA0qAhnr+DzqwmqHsx7Ulr/+0H7bWCcClDhhWkSyZR5BmTvnBEyONwJCTWHfc5PAQExX24VD26IAVw==
   /acorn-jsx/3.0.1:
     dependencies:
       acorn: 3.3.0
@@ -2466,7 +2501,7 @@ specifiers:
   '@rollup/plugin-typescript': ^4.1.1
   '@types/node': ^13.13.3
   '@typescript-eslint/eslint-plugin': ^2.29.0
-  '@typescript-eslint/parser': ^2.29.0
+  '@typescript-eslint/parser': ^2.30.0
   eslint: ^6.8.0
   eslint-config-standard: ^14.1.1
   eslint-plugin-import: ^2.20.2
