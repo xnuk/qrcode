@@ -15,7 +15,8 @@
 		"build:html": "run-s build:html:*",
 		"build:dev": "npm-run-all -p lint:script build:script build:style -s build:html",
 		"build:prod": "NODE_ENV=production npm-run-all -p lint:script build:prod:* -s build:html",
-		"build": "npm-run-all build:prod"
+		"build": "npm-run-all build:prod",
+		"preinstall": "node ./only-pnpm.js"
 	},
 	"repository": {
 		"type": "git",
