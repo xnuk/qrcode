@@ -25,22 +25,22 @@
 	"author": "Xnuk Shuman",
 	"license": "BSD-3-Clause",
 	"devDependencies": {
-		"@rollup/plugin-typescript": "^4.1.2",
-		"@types/node": "^14.0.13",
-		"@typescript-eslint/eslint-plugin": "^3.3.0",
-		"@typescript-eslint/parser": "^3.3.0",
-		"eslint": "^7.3.0",
+		"@rollup/plugin-typescript": "^5.0.1",
+		"@types/node": "^14.0.14",
+		"@typescript-eslint/eslint-plugin": "^3.5.0",
+		"@typescript-eslint/parser": "^3.5.0",
+		"eslint": "^7.4.0",
 		"eslint-config-standard": "^14.1.1",
-		"eslint-plugin-import": "^2.21.2",
+		"eslint-plugin-import": "^2.22.0",
 		"eslint-plugin-node": "^11.1.0",
 		"eslint-plugin-promise": "^4.2.1",
 		"eslint-plugin-standard": "^4.0.1",
 		"npm-run-all": "^4.1.5",
 		"prettier-eslint-cli": "^5.0.0",
-		"rollup": "^2.17.1",
-		"sass": "^1.26.8",
+		"rollup": "^2.19.0",
+		"sass": "^1.26.9",
 		"terser": "^4.8.0",
 		"tslib": "^2.0.0",
-		"typescript": "^3.9.5"
+		"typescript": "^3.9.6"
 	}
 }
