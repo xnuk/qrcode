@@ -41,6 +41,6 @@
 		"sass": "^1.26.9",
 		"terser": "^4.8.0",
 		"tslib": "^2.0.0",
-		"typescript": "^3.9.6"
+		"typescript": "^3.9.7"
 	}
 }
