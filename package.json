@@ -39,7 +39,7 @@
 		"prettier-eslint-cli": "^5.0.0",
 		"rollup": "^2.23.0",
 		"sass": "^1.26.10",
-		"terser": "^5.0.0",
+		"terser": "^5.1.0",
 		"tslib": "^2.0.0",
 		"typescript": "^3.9.7"
 	}
