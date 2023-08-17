@@ -3,13 +3,17 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "",
+	"packageManager": "pnpm@8.6.12",
+	"engines": {
+		"node": ">= 18"
+	},
 	"scripts": {
 		"lint:script": "eslint ./src/**.ts",
 		"build:script:minify": "terser --config-file=terser.json dist/index.js -o dist/index.js",
 		"build:script": "rollup src/index.ts -p typescript -f iife -o dist/index.js",
 		"build:prod:script": "run-s build:script build:script:minify",
 		"build:style": "sass src/index.sass:dist/index.css --no-source-map",
-		"build:prod:style": "run-s 'build:style -- --style compressed'",
+		"build:prod:style": "run-s 'build:style --style compressed'",
 		"build:html:1-script": "./bin/transpiler ./src/bin/html.ts ./bin/html",
 		"build:html:2-template": "./bin/html dist/index.css dist/index.js src/index.html > dist/index.html",
 		"build:html": "run-s build:html:*",

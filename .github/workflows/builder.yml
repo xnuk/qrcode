@@ -10,40 +10,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      NPM_CONFIG_PREFIX: /home/runner/.npm/global-packages
 
     steps:
-    - uses: actions/checkout@v2
-
-    - uses: actions/cache@v1
+    - uses: actions/checkout@v3
+    - run: corepack enable
+    - uses: actions/setup-node@v3
       with:
-        path: ~/.pnpm-store
-        key: ${{ runner.os }}-pnpm-store-v1
+        node-version: 20
+        cache: pnpm
 
-    - uses: actions/cache@v1
-      id: pnpm-bin
-      with:
-        path: ${{ env.NPM_CONFIG_PREFIX }}
-        key: ${{ runner.os }}-pnpm-bin-v1
-
-    - name: Installing pnpm
-      run: npx pnpm add -g pnpm
-      if: steps.pnpm-bin.outputs.cache-hit != 'true'
-
-    - name: pnpm install
-      run: >
-        export PATH=$NPM_CONFIG_PREFIX/bin:$PATH &&
-        pnpm install
-
-    - name: build
-      run: >
-        export PATH=$NPM_CONFIG_PREFIX/bin:$PATH &&
-        pnpm run build
+    - run: pnpm install --frozen-lockfile
+    - run: pnpm run build
       env:
         NODE_ENV: production
 
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v3
       with:
         name: index.min.html
         path: dist/index.html
@@ -55,7 +36,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         ref: gh-pages
@@ -64,7 +45,7 @@ jobs:
         rm -rf * &&
         echo qr.xnu.kr > CNAME
 
-    - uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v3
       with:
         name: index.min.html
         path: .
