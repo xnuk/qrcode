@@ -12,7 +12,6 @@ parserOptions:
 plugins:
   - '@typescript-eslint'
   - import
-  - standard
 
 extends:
   - plugin:@typescript-eslint/recommended
@@ -58,14 +57,13 @@ rules:
       singleline:
         delimiter: comma
         requireLast: true
-  no-unused-vars: &unused_vars
+  '@typescript-eslint/no-unused-vars':
     - error
     - vars: all
       varsIgnorePattern: '^___'
       args: all
       argsIgnorePattern: '^_+$'
       caughtErrors: all
-  '@typescript-eslint/no-unused-vars': *unused_vars
   operator-linebreak:
     - error
     - before

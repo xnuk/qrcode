@@ -14,11 +14,8 @@
 		"forceConsistentCasingInFileNames": true,
 		"newLine": "lf",
 		"removeComments": false,
-		"esModuleInterop": true
+		"esModuleInterop": true,
+		"allowImportingTsExtensions": true
 	},
-	"exclude": [
-		"./bin/",
-		"./dist/",
-		"./node_modules/"
-	]
+	"exclude": ["./bin/", "./dist/", "./node_modules/"]
 }
