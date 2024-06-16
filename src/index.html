@@ -9,6 +9,14 @@
 	img-src blob:
 ">
 <style></style>
-<input placeholder="Type here...">
+<input placeholder="Type here..." list="templates">
+<datalist id="templates">
+<option value="WIFI:T:WPA;S:wifi_name_here;P:password_here;;">Template: WIFI (WPA)</option>
+<option value="WIFI:T:WPA;S:wifi_name_here;P:password_here;H:true;;">Template: WIFI (WPA, hidden)</option>
+<option value="MECARD:N:Your Name Here;ADR:Your Address Here;TEL:+821012345678;EMAIL:someone@example.com;;">Template: Contact Information - MECARD</option>
+<option value="tel:+821012345678">Template: Phone number (tel)</option>
+<option value="sms:+821012345678">Template: Phone number (sms)</option>
+<option value="geo:36.2246,127.9112">Template: Maps, Geo location</option>
+</datalist>
 <img>
 <script></script>
